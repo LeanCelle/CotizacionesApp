@@ -9,9 +9,16 @@ body {
   margin: auto;
 }
 
+.title-container {
+  width: 100%;
+  background-color: rgb(33, 33, 33);
+  margin: 0px 0px 60px 0px;
+  padding: 30px 0px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
 .title {
   text-align: center;
-  margin: 60px 0px;
+  color: #f6f6f6;
 }
 
 .table-container {
@@ -19,7 +26,7 @@ body {
 }
 
 .data-table {
-  width: 90%;
+  width: 95%;
   margin: auto;
   background-color: white;
   border-radius: 10px;
@@ -49,8 +56,32 @@ body {
   text-align: center;
 }
 
-.loading {
-  font-size: 1.2rem;
-  color: #dfdfdf;
-  text-align: center;
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh; /* Asegura que ocupe toda la altura de la pantalla */
 }
+
+.loading {
+  margin-top: 20px; /* Espaciado entre el loader y el texto */
+  font-size: 18px;
+  color: #333;
+}
+
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  text-align: center;
+  color: red;
+  font-size: 18px;
+}
+
+.error-message {
+  margin: 0;
+}
+

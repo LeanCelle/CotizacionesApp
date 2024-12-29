@@ -17,7 +17,7 @@ def predict():
     for ticker in tickers:
         try:
             # Descargar datos históricos (último año)
-            data = yf.download(ticker, start="2024-01-01", end="2025-01-01")
+            data = yf.download(ticker, start="2024-01-01", end=pd.to_datetime('today').strftime('%Y-%m-%d'))
             if data.empty:
                 results[ticker] = {
                     "current_price": None,
@@ -27,7 +27,9 @@ def predict():
                     "percent_variation": None,
                     "market_cap": None,
                     "earnings_per_share": None,
-                    "revenue": None
+                    "revenue": None,
+                    "high_52_week": None,
+                    "low_52_week": None
                 }
                 continue
 
@@ -56,6 +58,8 @@ def predict():
             market_cap = market_info.get("marketCap", None)
             earnings_per_share = market_info.get("trailingEps", None)
             revenue = market_info.get("totalRevenue", None)
+            high_52_week = market_info.get("fiftyTwoWeekHigh", None)
+            low_52_week = market_info.get("fiftyTwoWeekLow", None)
 
             last_date = data.index[-1]
             results[ticker] = {
@@ -66,7 +70,9 @@ def predict():
                 "percent_variation": percent_variation,
                 "market_cap": market_cap,
                 "earnings_per_share": earnings_per_share,
-                "revenue": revenue
+                "revenue": revenue,
+                "high_52_week": high_52_week,
+                "low_52_week": low_52_week
             }
         except Exception as e:
             print(f"Error procesando {ticker}: {e}")
@@ -78,7 +84,9 @@ def predict():
                 "percent_variation": None,
                 "market_cap": None,
                 "earnings_per_share": None,
-                "revenue": None
+                "revenue": None,
+                "high_52_week": None,
+                "low_52_week": None
             }
 
     return jsonify(results)
