@@ -9,16 +9,26 @@ CORS(app)
 
 @app.route('/predict', methods=['GET'])
 def predict():
-    # Lista de las 10 acciones más importantes
-    tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NFLX", "NVDA", "INTC", "ORCL"]
+    tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NFLX", "NVDA", "INTC", "ORCL",
+               "BABA", "PYPL", "UBER", "DIS", "V"]
+
     results = {}
 
     for ticker in tickers:
         try:
             # Descargar datos históricos (último año)
-            data = yf.download(ticker, start="2023-01-01", end="2024-12-29")
+            data = yf.download(ticker, start="2024-01-01", end="2025-01-01")
             if data.empty:
-                results[ticker] = {"current_price": None, "prediction": None}
+                results[ticker] = {
+                    "current_price": None,
+                    "prediction": None,
+                    "last_date": None,
+                    "volume": None,
+                    "percent_variation": None,
+                    "market_cap": None,
+                    "earnings_per_share": None,
+                    "revenue": None
+                }
                 continue
 
             # Crear DataFrame para Prophet
@@ -33,18 +43,43 @@ def predict():
             future = model.make_future_dataframe(periods=1)
             forecast = model.predict(future)
 
-            # Obtener precio actual y predicción para el próximo día
-            current_price = data['Close'].iloc[-1]
-            prediction = forecast['yhat'].iloc[-1]
+            # Obtener precio actual, predicción y volumen
+            current_price = float(data['Close'].iloc[-1])  # Convertir a float explícitamente
+            prediction = float(forecast['yhat'].iloc[-1])  # Convertir a float explícitamente
+            volume = int(data['Volume'].iloc[-1])  # Convertir a entero explícitamente
 
-            # Almacenar resultados
+            # Calcular la variación porcentual
+            percent_variation = round(((prediction - current_price) / current_price) * 100, 2)
+
+            # Obtener métricas adicionales
+            market_info = yf.Ticker(ticker).info
+            market_cap = market_info.get("marketCap", None)
+            earnings_per_share = market_info.get("trailingEps", None)
+            revenue = market_info.get("totalRevenue", None)
+
+            last_date = data.index[-1]
             results[ticker] = {
-                "current_price": float(current_price),
-                "prediction": float(prediction),
+                "current_price": current_price,
+                "prediction": prediction,
+                "last_date": last_date.strftime('%Y-%m-%d %H:%M:%S'),
+                "volume": volume,
+                "percent_variation": percent_variation,
+                "market_cap": market_cap,
+                "earnings_per_share": earnings_per_share,
+                "revenue": revenue
             }
         except Exception as e:
             print(f"Error procesando {ticker}: {e}")
-            results[ticker] = {"current_price": None, "prediction": None}
+            results[ticker] = {
+                "current_price": None,
+                "prediction": None,
+                "last_date": None,
+                "volume": None,
+                "percent_variation": None,
+                "market_cap": None,
+                "earnings_per_share": None,
+                "revenue": None
+            }
 
     return jsonify(results)
 

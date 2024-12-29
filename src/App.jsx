@@ -7,41 +7,54 @@ const App = () => {
 
     useEffect(() => {
         axios.get('http://127.0.0.1:5000/predict')
-            .then(response => {
-                setData(response.data);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
+            .then(response => setData(response.data))
+            .catch(error => console.error("Error fetching data:", error));
     }, []);
+
+    const getRecommendation = (percentVariation) => {
+        if (percentVariation > 5) return "Comprar";
+        if (percentVariation < -5) return "Vender";
+        return "Hold";
+    };
 
     return (
         <div className="app-container">
             <h1 className="title">Precios Actuales y Predicciones</h1>
             <div className="table-container">
                 {Object.keys(data).length > 0 ? (
-                    <table className="data-table">
-                        <thead>
-                            <tr>
-                                <th>Acción</th>
-                                <th>Precio Actual</th>
-                                <th>Predicción</th>
-                                <th>Última Fecha</th>
-                                <th>Volumen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Object.entries(data).map(([ticker, info], index) => (
-                                <tr key={index}>
-                                    <td>{ticker}</td>
-                                    <td>{info.current_price !== null ? `$${info.current_price.toFixed(2)}` : "No disponible"}</td>
-                                    <td>{info.prediction !== null ? `$${info.prediction.toFixed(2)}` : "No disponible"}</td>
-                                    <td>{info.last_date || "No disponible"}</td>
-                                    <td>{info.volume !== null ? info.volume : "No disponible"}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <div className="data-table">
+                        <div className="data-table-actions">
+                            <div className='data-tabla-actions-into'><p>Acción</p></div>
+                            <div className='data-tabla-actions-into'><p>Precio Actual</p></div>
+                            <div className='data-tabla-actions-into'><p>Predicción</p></div>
+                            <div className='data-tabla-actions-into'><p>Última Fecha y Hora</p></div>
+                            <div className='data-tabla-actions-into'><p>% Variación</p></div>
+                            <div className='data-tabla-actions-into'><p>Recomendación</p></div>
+                        </div>
+                        {Object.entries(data).map(([ticker, info], index) => (
+                            <div className='data' key={index}>
+                                <div className='data-into'><p>{ticker}</p></div>
+                                <div className='data-into'><p>{info.current_price !== null ? `$${info.current_price.toFixed(2)}` : "No disponible"}</p></div>
+                                <div className='data-into'><p>{info.prediction !== null ? `$${info.prediction.toFixed(2)}` : "No disponible"}</p></div>
+                                <div className='data-into'><p>{info.last_date || "No disponible"}</p></div>
+                                <div
+                                    className='data-into'
+                                    style={{
+                                        color: info.percent_variation > 0
+                                            ? 'green'
+                                            : info.percent_variation < 0
+                                            ? 'red'
+                                            : 'black'
+                                    }}
+                                >
+                                    <p>{info.percent_variation !== null ? `${info.percent_variation.toFixed(2)}%` : "No disponible"}</p>
+                                </div>
+                                <div className='data-into'>
+                                    <p>{info.percent_variation !== null ? getRecommendation(info.percent_variation) : "No disponible"}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 ) : (
                     <p className="loading">Cargando datos...</p>
                 )}

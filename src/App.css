@@ -1,53 +1,56 @@
-/* App.css */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f9f9f9;
+  background-color: #f6f6f6;
 }
 
 .app-container {
-  padding: 20px;
-  max-width: 800px;
   margin: auto;
 }
 
 .title {
   text-align: center;
-  color: #333;
-  font-size: 2rem;
-  margin-bottom: 20px;
+  margin: 60px 0px;
 }
 
 .table-container {
   width: 100%;
-  border-collapse: collapse;
 }
 
 .data-table {
+  width: 90%;
+  margin: auto;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.data-table-actions {
+  display: flex;
+  justify-content: space-around;
+  font-weight: bold;
+}
+
+.data-tabla-actions-into {
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
+  text-align: center;
+  background-color: rgb(33, 33, 33);
+  color: #f6f6f6;
 }
 
-.data-table th, .data-table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+.data {
+  display: flex;
+  justify-content: space-around;
 }
 
-.data-table th {
-  background-color: #007bff;
-  color: white;
-}
-
-.data-table td {
-  color: #555;
+.data-into {
+  width: 100%;
+  border-top: #dfdfdf solid 1px;
+  text-align: center;
 }
 
 .loading {
   font-size: 1.2rem;
-  color: #999;
+  color: #dfdfdf;
   text-align: center;
 }
