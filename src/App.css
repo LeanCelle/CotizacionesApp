@@ -12,7 +12,7 @@ body {
 .title-container {
   width: 100%;
   background-color: rgb(33, 33, 33);
-  margin: 0px 0px 60px 0px;
+  margin: 0px 0px 10px 0px;
   padding: 30px 0px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
 }
@@ -26,7 +26,7 @@ body {
 }
 
 .data-table {
-  width: 95%;
+  width: 100%;
   margin: auto;
   background-color: white;
   border-radius: 10px;
@@ -84,4 +84,88 @@ body {
 .error-message {
   margin: 0;
 }
+
+.search-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.search-input {
+  padding: 10px;
+  width: 300px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.search-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+/* styles.css */
+.top-actions-container {
+  display: flex;
+  justify-content: center;
+}
+
+.top-actions-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+
+.top-action-item {
+  padding: 10px 15px;
+  background-color: #000000;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  color: #dfdfdf;
+  transition: background-color 0.3s ease;
+}
+
+.top-action-item:hover {
+  background-color: #e0e0e0;
+  color: #333;
+  cursor: pointer;
+}
+
+.loading-logo-container {
+  background-color: #f6f6f6;
+}
+
+/* Utiliza los estilos en tu componente Main.jsx */
+
+
+
+
 
