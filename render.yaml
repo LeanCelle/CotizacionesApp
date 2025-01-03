@@ -1,7 +1,6 @@
 services:
   - type: web
-    name: mi-backend
+    name: cotizacionesApp
     env: python
     buildCommand: ""
     startCommand: gunicorn scripts.app:app
-    plan: free
