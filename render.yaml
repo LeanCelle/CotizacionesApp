@@ -3,5 +3,5 @@ services:
     name: mi-backend
     env: python
     buildCommand: ""
-    startCommand: gunicorn app:app
+    startCommand: gunicorn scripts.app:app
     plan: free
