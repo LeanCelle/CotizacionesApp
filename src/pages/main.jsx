@@ -3,6 +3,7 @@ import axios from 'axios';
 import { top100Actions } from '../data/List100';
 import DataTable from '../components/data_table';
 import LoadingLogo from '../components/loading_logo';
+import ChartComponent from '../components/chart';
 
 const Main = () => {
     const [data, setData] = useState({});
@@ -83,14 +84,21 @@ const Main = () => {
                         <LoadingLogo loading={true} logoSrc={null} />
                     ) : (
                         <>
-                            <h2>{selectedAction.name}</h2>
-                            <p><strong>Precio Actual:</strong> ${selectedAction.current_price?.toFixed(2) || "No disponible"}</p>
-                            <p><strong>Predicción:</strong> ${selectedAction.prediction?.toFixed(2) || "No disponible"}</p>
-                            <p><strong>% Variación:</strong> {selectedAction.percent_variation?.toFixed(2) || "No disponible"}%</p>
-                            <p><strong>Recomendación:</strong> {getRecommendation(selectedAction.percent_variation)}</p>
-                            <p><strong>52-Week High:</strong> ${selectedAction.high_52_week?.toFixed(2) || "No disponible"}</p>
-                            <p><strong>52-Week Low:</strong> ${selectedAction.low_52_week || "No disponible"}</p>
-                            <p><strong>Última Fecha:</strong> {selectedAction.last_date || "No disponible"}</p>
+                        <div className='chart-big-container'>
+                            <div className='chart-container-info'>
+                                <h2>{selectedAction.name} - {selectedAction.longName}</h2>
+                                <p><strong>Precio Actual:</strong> ${selectedAction.current_price?.toFixed(2) || "No disponible"}</p>
+                                <p><strong>Predicción:</strong> ${selectedAction.prediction?.toFixed(2) || "No disponible"}</p>
+                                <p><strong>% Variación:</strong> {selectedAction.percent_variation?.toFixed(2) || "No disponible"}%</p>
+                                <p><strong>Recomendación:</strong> {getRecommendation(selectedAction.percent_variation)}</p>
+                                <p><strong>52-Week High:</strong> ${selectedAction.high_52_week?.toFixed(2) || "No disponible"}</p>
+                                <p><strong>52-Week Low:</strong> ${selectedAction.low_52_week || "No disponible"}</p>
+                                <p><strong>Última Fecha:</strong> {selectedAction.last_updated || "No disponible"}</p>
+                            </div>
+                            <div className='chart-container'>
+                                <ChartComponent selectedAction={selectedAction} />
+                            </div>
+                        </div>
                         </>
                     )}
                 </div>

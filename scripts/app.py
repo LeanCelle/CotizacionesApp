@@ -1,15 +1,57 @@
-import yfinance as yf
 from flask import Flask, jsonify
 from flask_cors import CORS
+import yfinance as yf
 from prophet import Prophet
 import pandas as pd
-from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
 
 # Cache para almacenar resultados
 results_cache = {}
+
+def fetch_market_info(ticker):
+    """Obtiene información del mercado para un ticker dado."""
+    market_info = yf.Ticker(ticker).info
+    last_updated = yf.Ticker(ticker).history(period='1d').index[-1].strftime('%d-%m-%Y')  # Última fecha disponible
+
+    return {
+        "longName": market_info.get("longName"),
+        "market_cap": market_info.get("marketCap"),
+        "earnings_per_share": market_info.get("trailingEps"),
+        "revenue": market_info.get("totalRevenue"),
+        "high_52_week": market_info.get("fiftyTwoWeekHigh"),
+        "low_52_week": market_info.get("fiftyTwoWeekLow"),
+        "last_updated": last_updated  # Agregando la última fecha
+    }
+
+def predict_price(ticker, start_date="2024-01-01"):
+    """Genera una predicción de precios usando Prophet."""
+    try:
+        data = yf.download(ticker, start=start_date, end=(pd.to_datetime('today') + pd.Timedelta(days=1)).strftime('%Y-%m-%d'))
+        print(data.head())  # Imprimir los primeros registros del DataFrame
+
+        if data.empty:
+            return None, None, None
+
+        df = data[['Close']].reset_index()
+        df.columns = ['ds', 'y']
+
+        model = Prophet()
+        model.fit(df)
+
+        future = model.make_future_dataframe(periods=1)
+        forecast = model.predict(future)
+
+        current_price = float(data['Close'].iloc[-1])
+        prediction = float(forecast['yhat'].iloc[-1])
+        percent_variation = round(((prediction - current_price) / current_price) * 100, 2)
+
+        return current_price, prediction, percent_variation
+    except KeyError as e:
+        return None, None, f"KeyError: {str(e)}"
+    except Exception as e:
+        return None, None, f"Unexpected error: {str(e)}"
 
 @app.route('/predict', methods=['GET'])
 def predict():
@@ -22,75 +64,19 @@ def predict():
             predictions.append(results_cache[ticker])
             continue
 
-        try:
-            market_info = yf.Ticker(ticker).info
-            ticker_name = market_info.get("Symbol", ticker)  # Si no existe shortName, utiliza el ticker como nombre.
+        market_info = fetch_market_info(ticker)
+        current_price, prediction, percent_variation = predict_price(ticker)
 
-            data = yf.download(ticker, start="2024-01-01", end=(pd.to_datetime('today') + pd.Timedelta(days=1)).strftime('%Y-%m-%d'))
-            if data.empty:
-                predictions.append({
-                    "name": ticker_name,
-                    "current_price": None,
-                    "prediction": None,
-                    "last_date": None,
-                    "percent_variation": None,
-                    "market_cap": None,
-                    "earnings_per_share": None,
-                    "revenue": None,
-                    "high_52_week": None,
-                    "low_52_week": None
-                })
-                continue
+        result = {
+            "name": ticker,
+            "current_price": current_price,
+            "prediction": prediction,
+            "percent_variation": percent_variation,
+            **market_info
+        }
 
-            df = data[['Close']].reset_index()
-            df.columns = ['ds', 'y']
-
-            model = Prophet()
-            model.fit(df)
-
-            future = model.make_future_dataframe(periods=1)
-            forecast = model.predict(future)
-
-            last_date = data.index[-1]
-            current_price = float(data['Close'].iloc[-1])
-            prediction = float(forecast['yhat'].iloc[-1])
-            percent_variation = round(((prediction - current_price) / current_price) * 100, 2)
-
-            market_cap = market_info.get("marketCap", None)
-            earnings_per_share = market_info.get("trailingEps", None)
-            revenue = market_info.get("totalRevenue", None)
-            high_52_week = market_info.get("fiftyTwoWeekHigh", None)
-            low_52_week = market_info.get("fiftyTwoWeekLow", None)
-
-            result = {
-                "name": ticker_name,
-                "current_price": current_price,
-                "prediction": prediction,
-                "last_date": last_date.strftime('%Y-%m-%d'),
-                "percent_variation": percent_variation,
-                "market_cap": market_cap,
-                "earnings_per_share": earnings_per_share,
-                "revenue": revenue,
-                "high_52_week": high_52_week,
-                "low_52_week": low_52_week
-            }
-
-            results_cache[ticker] = result
-            predictions.append(result)
-
-        except Exception as e:
-            predictions.append({
-                "name": ticker_name,
-                "current_price": None,
-                "prediction": None,
-                "last_date": None,
-                "percent_variation": None,
-                "market_cap": None,
-                "earnings_per_share": None,
-                "revenue": None,
-                "high_52_week": None,
-                "low_52_week": None
-            })
+        results_cache[ticker] = result
+        predictions.append(result)
 
     return jsonify(predictions)
 
@@ -99,74 +85,39 @@ def search(ticker):
     if ticker in results_cache:
         return jsonify(results_cache[ticker])
 
+    market_info = fetch_market_info(ticker)
+    current_price, prediction, percent_variation = predict_price(ticker)
+
+    result = {
+        "name": ticker,
+        "current_price": current_price,
+        "prediction": prediction,
+        "percent_variation": percent_variation,
+        **market_info
+    }
+
+    results_cache[ticker] = result
+    return jsonify(result)
+
+@app.route('/last5days/<ticker>', methods=['GET'])
+def last5days(ticker):
     try:
-        market_info = yf.Ticker(ticker).info
-        ticker_name = market_info.get("Symbol", ticker)  # Si no existe shortName, utiliza el ticker como nombre.
+        data = yf.download(ticker, period='1mo', interval='1d')
 
-        data = yf.download(ticker, start="2024-01-01", end=(pd.to_datetime('today') + pd.Timedelta(days=1)).strftime('%Y-%m-%d'))
         if data.empty:
-            return jsonify({
-                "name": ticker_name,
-                "current_price": None,
-                "prediction": None,
-                "last_date": None,
-                "percent_variation": None,
-                "market_cap": None,
-                "earnings_per_share": None,
-                "revenue": None,
-                "high_52_week": None,
-                "low_52_week": None
-            })
+            return {"prices": [], "dates": []}
 
-        df = data[['Close']].reset_index()
-        df.columns = ['ds', 'y']
+        prices = data['Close'].values.tolist()  # Usando .values.tolist()
+        dates = data.index.strftime('%d-%m').tolist()
 
-        model = Prophet()
-        model.fit(df)
+        # Validación adicional
+        if not isinstance(prices, list) or not isinstance(dates, list):
+            return {"error": "Datos incompletos para 'prices' o 'dates'"}
 
-        future = model.make_future_dataframe(periods=1)
-        forecast = model.predict(future)
-
-        last_date = data.index[-1]
-        current_price = float(data['Close'].iloc[-1])
-        prediction = float(forecast['yhat'].iloc[-1])
-        percent_variation = round(((prediction - current_price) / current_price) * 100, 2)
-
-        market_cap = market_info.get("marketCap", None)
-        earnings_per_share = market_info.get("trailingEps", None)
-        revenue = market_info.get("totalRevenue", None)
-        high_52_week = market_info.get("fiftyTwoWeekHigh", None)
-        low_52_week = market_info.get("fiftyTwoWeekLow", None)
-
-        result = {
-            "name": ticker_name,
-            "current_price": current_price,
-            "prediction": prediction,
-            "last_date": last_date.strftime('%Y-%m-%d'),
-            "percent_variation": percent_variation,
-            "market_cap": market_cap,
-            "earnings_per_share": earnings_per_share,
-            "revenue": revenue,
-            "high_52_week": high_52_week,
-            "low_52_week": low_52_week
-        }
-
-        results_cache[ticker] = result
-        return jsonify(result)
+        return {"prices": prices, "dates": dates}
 
     except Exception as e:
-        return jsonify({
-            "name": ticker,
-            "current_price": None,
-            "prediction": None,
-            "last_date": None,
-            "percent_variation": None,
-            "market_cap": None,
-            "earnings_per_share": None,
-            "revenue": None,
-            "high_52_week": None,
-            "low_52_week": None
-        })
+        return {"error": str(e)}
 
 if __name__ == '__main__':
     app.run(debug=True)

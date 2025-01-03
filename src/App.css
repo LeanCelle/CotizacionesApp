@@ -163,7 +163,23 @@ body {
   background-color: #f6f6f6;
 }
 
-/* Utiliza los estilos en tu componente Main.jsx */
+/* Chart */
+
+.chart-big-container {
+  width: 100%;
+  display: flex;
+}
+
+.chart-container-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chart-container {
+  width: 100%;
+}
 
 
 

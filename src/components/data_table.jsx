@@ -23,6 +23,7 @@ const DataTable = ({ data, selectedAction, handleActionClick, getRecommendation 
                 <>
                     <div className="data-table-actions">
                         <div className='data-tabla-actions-into'><p>Acción</p></div>
+                        <div className='data-tabla-actions-into'><p>Nombre</p></div>
                         <div className='data-tabla-actions-into'><p>Precio Actual</p></div>
                         <div className='data-tabla-actions-into'><p>Predicción</p></div>
                         <div className='data-tabla-actions-into'><p>% Variación</p></div>

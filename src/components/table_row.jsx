@@ -8,6 +8,7 @@ const TableRow = ({ data, selectedAction, handleActionClick, getRecommendation }
             style={{ cursor: 'pointer', backgroundColor: selectedAction?.name === data.name ? '#f0f8ff' : 'transparent' }}
         >
             <div className='data-into'><p>{data.name}</p></div>
+            <div className='data-into'><p>{data.longName}</p></div>
             <div className='data-into'><p>{data.current_price !== null ? `$${data.current_price.toFixed(2)}` : "No disponible"}</p></div>
             <div className='data-into'><p>{data.prediction !== null ? `$${data.prediction.toFixed(2)}` : "No disponible"}</p></div>
             <div
@@ -27,7 +28,7 @@ const TableRow = ({ data, selectedAction, handleActionClick, getRecommendation }
             </div>
             <div className='data-into'><p>{data.high_52_week !== null ? `$${data.high_52_week}` : "No disponible"}</p></div>
             <div className='data-into'><p>{data.low_52_week !== null ? `$${data.low_52_week}` : "No disponible"}</p></div>
-            <div className='data-into'><p>{data.last_date || "No disponible"}</p></div>
+            <div className='data-into'><p>{data.last_updated || "No disponible"}</p></div>
         </div>
     );
 };
