@@ -26,18 +26,18 @@ def fetch_market_info(ticker):
     }
 
 def predict_price(ticker, start_date="2024-01-01"):
-    """Genera una predicción de precios usando Prophet."""
+    """Genera una predicción de precios usando Prophet con configuración mejorada."""
     try:
         data = yf.download(ticker, start=start_date, end=(pd.to_datetime('today') + pd.Timedelta(days=1)).strftime('%Y-%m-%d'))
-        print(data.head())  # Imprimir los primeros registros del DataFrame
-
         if data.empty:
             return None, None, None
 
+        # Usando solo la columna de precios de cierre
         df = data[['Close']].reset_index()
         df.columns = ['ds', 'y']
 
-        model = Prophet()
+        # Ajustar Prophet con mejores configuraciones
+        model = Prophet(yearly_seasonality=True, daily_seasonality=True, weekly_seasonality=True)
         model.fit(df)
 
         future = model.make_future_dataframe(periods=1)
@@ -107,10 +107,9 @@ def last5days(ticker):
         if data.empty:
             return {"prices": [], "dates": []}
 
-        prices = data['Close'].values.tolist()  # Usando .values.tolist()
+        prices = data['Close'].values.tolist()
         dates = data.index.strftime('%d-%m').tolist()
 
-        # Validación adicional
         if not isinstance(prices, list) or not isinstance(dates, list):
             return {"error": "Datos incompletos para 'prices' o 'dates'"}
 

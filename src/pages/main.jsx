@@ -4,6 +4,8 @@ import { top100Actions } from '../data/List100';
 import DataTable from '../components/data_table';
 import LoadingLogo from '../components/loading_logo';
 import ChartComponent from '../components/chart';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const Main = () => {
     const [data, setData] = useState({});
@@ -69,7 +71,7 @@ const Main = () => {
                                 fontWeight: selectedAction?.name === action ? 'bold' : 'normal'
                             }}
                         >
-                            {action}
+                        {action}
                         </li>
                     ))}
                 </ul>
@@ -77,9 +79,12 @@ const Main = () => {
 
             {selectedAction ? (
                 <div className="selected-action-details">
-                    <button onClick={handleBackToTable} className="back-button">
+                    <p onClick={handleBackToTable} className="back-button">
+                        <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: '6px', color: '#333' }} />
                         Volver a la tabla
-                    </button>
+                    </p>
+
+
                     {loadingDetails ? (
                         <LoadingLogo loading={true} logoSrc={null} />
                     ) : (

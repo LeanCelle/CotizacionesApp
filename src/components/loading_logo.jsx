@@ -6,7 +6,7 @@ const LoadingLogo = ({ loading, logoSrc }) => {
         <div className="loading-logo-container">
             {loading ? (
                 <div className="loader-container">
-                    <FadeLoader color="rgba(255, 0, 0, 0.39)" loading={true} size={150} />
+                    <FadeLoader color="#333" loading={true} size={150} />
                     <p className="loading-text">Cargando {logoSrc ? <img src={logoSrc} alt="Logo" /> : ''}</p>
                 </div>
             ) : null}

@@ -10,10 +10,12 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler
 } from 'chart.js';
+import 'chartjs-plugin-annotation';
 import LoadingLogo from './loading_logo';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const ChartComponent = ({ selectedAction }) => {
   const [chartData, setChartData] = useState(null);
@@ -48,6 +50,8 @@ const ChartComponent = ({ selectedAction }) => {
                   backgroundColor: 'rgba(75, 192, 192, 0.2)',
                   borderColor: 'rgba(75, 192, 192, 1)',
                   borderWidth: 1,
+                  fill: 'origin',
+
                 },
               ],
             });
