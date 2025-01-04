@@ -10,6 +10,11 @@ CORS(app)
 # Cache para almacenar resultados
 results_cache = {}
 
+@app.route('/', methods=['GET'])
+def home():
+    return "Welcome to Cotizaciones App API"
+
+
 def fetch_market_info(ticker):
     """Obtiene información del mercado para un ticker dado."""
     market_info = yf.Ticker(ticker).info
