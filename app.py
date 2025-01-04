@@ -60,7 +60,7 @@ def predict_price(ticker, start_date="2024-01-01"):
 
 @app.route('/predict', methods=['GET'])
 def predict():
-    tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "BRK.A", "AVGO", "DIS", "V", "LLY", "WMT", "JPM", "MA", "XOM", ]
+    tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "BRK-A", "AVGO", "DIS", "V", "LLY", "WMT", "JPM", "MA", "XOM", ]
 
     predictions = []
     for ticker in tickers:
