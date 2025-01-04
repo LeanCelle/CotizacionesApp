@@ -3,4 +3,4 @@ services:
     name: cotizacionesApp
     env: python
     buildCommand: ""
-    startCommand: gunicorn scripts.app:app
+    startCommand: gunicorn wsgi:app
