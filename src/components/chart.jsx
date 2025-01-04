@@ -76,7 +76,7 @@ const ChartComponent = ({ selectedAction }) => {
   };
 
   return (
-    <div className="chart-container" style={{ width: '100%', margin: 'auto', textAlign:'center' }}>
+    <div style={{ width: '100%', margin: 'auto', textAlign:'center' }}>
       {chartData ? (
         <Line data={chartData} options={options} />
       ) : (
