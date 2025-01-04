@@ -29,10 +29,8 @@ const ChartComponent = ({ selectedAction }) => {
       }
 
       axios
-        .get(`http://127.0.0.1:5000/last5days/${ticker}`)
+        .get(`${process.env.REACT_APP_BACKEND_URL}/last5days/${ticker}`)
         .then((response) => {
-          console.log("Datos recibidos de la API:", response.data); // Agregar console.log aquí
-
           const { prices, dates } = response.data;
           if (Array.isArray(prices) && Array.isArray(dates)) {
             const formattedPrices = prices.map((price, index) => ({
@@ -51,7 +49,6 @@ const ChartComponent = ({ selectedAction }) => {
                   borderColor: 'rgba(75, 192, 192, 1)',
                   borderWidth: 1,
                   fill: 'origin',
-
                 },
               ],
             });

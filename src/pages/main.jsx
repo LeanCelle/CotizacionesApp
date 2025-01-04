@@ -7,6 +7,7 @@ import ChartComponent from '../components/chart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
+
 const Main = () => {
     const [data, setData] = useState({});
     const [error, setError] = useState(false);
@@ -14,10 +15,12 @@ const Main = () => {
     const [loadingDetails, setLoadingDetails] = useState(false);
     const [loading, setLoading] = useState(false);
 
+
+    
     useEffect(() => {
         setLoading(true);
         if (Object.keys(data).length === 0) {
-            axios.get(`http://127.0.0.1:5000/predict`)
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/predict`)
                 .then(response => {
                     setData(response.data);
                     setLoading(false);
@@ -37,7 +40,7 @@ const Main = () => {
 
     const handleActionClick = (action) => {
         setLoadingDetails(true);
-        axios.get(`http://127.0.0.1:5000/search/${action}`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/search/${action}`)
             .then(response => {
                 setSelectedAction({ name: action, ...response.data });
                 setLoadingDetails(false);
