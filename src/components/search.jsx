@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const SearchBar = ({ onSearch }) => {
     const [query, setQuery] = useState('');
@@ -12,6 +14,12 @@ const SearchBar = ({ onSearch }) => {
         onSearch(query);
     };
 
+    const handleSearch = () => {
+        if (onSearch) {
+            onSearch(query);
+        }
+    };
+
     return (
         <form className="search-bar" onSubmit={handleSubmit}>
             <input 
@@ -21,7 +29,9 @@ const SearchBar = ({ onSearch }) => {
                 placeholder="Buscar acción (ej: AMZN)..." 
                 required 
             />
-            <button type="submit">Buscar</button>
+            <button onClick={handleSearch} className="search-button">
+                <FontAwesomeIcon icon={faSearch} color='#05347c'/>
+            </button>
         </form>
     );
 };

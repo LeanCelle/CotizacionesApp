@@ -4,7 +4,6 @@ import DataTable from '../components/data_table';
 import LoadingLogo from '../components/loading_logo';
 import ChartComponent from '../components/chart';
 import Navbar from '../components/navbar';
-import SearchBar from '../components/search';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -67,9 +66,7 @@ const Main = () => {
 
     return (
         <div className="app-container">
-            <Navbar />
-
-            <SearchBar onSearch={handleSearch} />
+            <Navbar onSearch={handleSearch}/>
 
             {selectedAction ? (
                 <div className="selected-action-details">
