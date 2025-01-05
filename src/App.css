@@ -195,6 +195,10 @@ body {
   align-items: center;
 }
 
+.logo-navbar {
+  width: 170px;
+}
+
 .navbar-container-title {
   width: 100%;
   text-align: center;
@@ -230,6 +234,40 @@ body {
   color: #b8b8b8;
   cursor: pointer;
 }
+
+/* styles/SearchBar.css */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 400px;
+  padding: 10px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+
+
+
+
 
 
 

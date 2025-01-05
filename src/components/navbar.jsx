@@ -1,15 +1,14 @@
 // components/navbar.js
 import React from 'react';
 import { BrowserRouter as Link } from 'react-router-dom';
+import logo from '../assets/img/WhatsApp_Image_2025-01-05_at_02.48.41_8d8acf1f-removebg-preview.png'
 
 const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="navbar-container">
                 <div className='navbar-container-title'>
-                    <h1 className="navbar-title">
-                        Cotizaciones.App
-                    </h1>
+                    <img className='logo-navbar' src={logo} alt="Cotizacione.App." />
                 </div>
                 <div className='navbar-container-links'>
                     <ul className="navbar-links">
