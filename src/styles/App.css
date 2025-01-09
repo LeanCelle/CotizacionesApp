@@ -16,7 +16,6 @@ body {
 .data-table {
   width: 100%;
   margin: auto;
-  background-color: #ffffff;
   border-radius: 10px;
 }
 
@@ -43,6 +42,7 @@ body {
   width: 100%;
   border-top: #b8b8b8 solid 1px;
   text-align: center;
+  background-color: #ffffff;
 }
 
 .loader-container {
@@ -52,12 +52,6 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 70vh; /* Asegura que ocupe toda la altura de la pantalla */
-}
-
-.loading {
-  margin-top: 20px; /* Espaciado entre el loader y el texto */
-  font-size: 18px;
-  color: #333;
 }
 
 
@@ -75,7 +69,7 @@ body {
   margin: 0;
 }
 
-/* styles.css */
+
 .top-actions-container {
   display: flex;
 }
@@ -110,7 +104,7 @@ body {
 
 .chart-big-container {
   display: flex;
-  padding: 0px 100px;
+  padding: 0px 25px;
   gap: 40px;
 }
 
@@ -169,7 +163,7 @@ body {
 
 .back-button {
   display:inline-flex;
-  margin: 20px 20px 20px 20px;
+  margin: 50px 0px 30px 25px;
   color: #333;
   font-size: 14px;
   cursor: pointer;
@@ -219,6 +213,7 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 30px;
   width: 100%;
 }
@@ -281,3 +276,189 @@ body {
   border: 1px solid #ccc;
   cursor: pointer;
 }
+
+/* Register */
+
+.register-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.register-page h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #05347c;
+  font-weight: 100;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.register-form {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-form input {
+  background-color: #ffffff;
+  padding: 12px;
+  border: none;
+  border-bottom: 1px solid #05347c;
+  margin-top: 5px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.register-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #05347c;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 5px;
+}
+
+.register-button:hover {
+  background-color: #ffffff;
+  color: #05347c;
+}
+
+.user-info {
+  color: #05347c;
+}
+
+.logout {
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+  background-color: rgba(255, 0, 0, 0.63);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.logout:hover {
+  background-color: #ffffff;
+  color: rgba(255, 0, 0, 0.63);
+  cursor: pointer;
+}
+
+/* Estilos del modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.sure {
+  color: #000000;
+}
+
+.modalButton {
+  width: 25%;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 5px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Login */
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.login-page h1 {
+  font-weight: 100;
+  margin-bottom: 20px;
+  color: #05347c;
+}
+
+.login-error {
+  color: red;
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.login-form {
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.form-group input {
+  background-color: #ffffff00;
+  padding: 12px;
+  border: none;
+  border-bottom: 1px solid #05347c;
+  margin-top: 5px;
+  outline: none;
+  transition: border 0.3s ease;
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  background-color: #05347c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 5px;
+}
+
+.login-button:hover {
+  background-color: #ffffff;
+  color: #05347c;
+}
+
+.login-button:active {
+  background-color: #3b3bcf;
+}
+
+
+
