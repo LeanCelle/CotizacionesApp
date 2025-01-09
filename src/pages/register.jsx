@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import { registerUser } from '../data/authService';
+import Footer from '../components/footer';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -108,6 +109,7 @@ const Register = () => {
                     <button type="submit" className="register-button">Crear usuario</button>
                 </form>
             </div>
+            <Footer/>
         </>
     );
 };

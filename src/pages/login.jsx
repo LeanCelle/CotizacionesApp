@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, onAuthStateChanged  } from "firebase/auth";
 import { auth } from '../data/firebase'; // Asegúrate de que la ruta sea correcta
 import Navbar from '../components/navbar';
+import Footer from '../components/footer';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -84,6 +85,7 @@ const Login = () => {
                     <button type="submit" className="login-button">Iniciar sesión</button>
                 </form>
             </div>
+            <Footer/>
         </>
     );
 };

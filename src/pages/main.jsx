@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import DataTable from '../components/data_table';
 import Navbar from '../components/navbar';
 import LoadingLogo from '../components/loading_logo';
+import Footer from '../components/footer';
 
 const Main = ({ getRecommendation }) => {
     const [data, setData] = useState([]);
@@ -52,6 +53,7 @@ const Main = ({ getRecommendation }) => {
                     getRecommendation={getRecommendation}
                 />
             )}
+            <Footer/>
         </div>
     );
 };
