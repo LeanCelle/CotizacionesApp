@@ -29,7 +29,7 @@ const ChartComponent = ({ selectedAction }) => {
       }
 
       axios
-        .get(`http://127.0.0.1:5000/last5days/${ticker}`)
+        .get(`${process.env.REACT_APP_BACKEND_URL}/last5days/${ticker}`)
         .then((response) => {
           const { prices, dates } = response.data;
           if (Array.isArray(prices) && Array.isArray(dates)) {

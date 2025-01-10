@@ -13,7 +13,7 @@ const Main = ({ getRecommendation }) => {
 
     useEffect(() => {
         setLoading(true);
-        axios.get(`http://127.0.0.1:5000/predict`)
+        axios.get(`${process.env.REACT_APP_BACKEND_URL}/predict`)
             .then(response => {
                 setData(response.data);
                 setLoading(false);
