@@ -29,7 +29,7 @@ const ActionDetails = () => {
     useEffect(() => {
         console.log("Acción recibida desde la URL:", action); // Verificar valor de la acción
         setLoadingDetails(true);
-        axios.get(`${process.env.REACT_APP_BACKEND_URL}/search/${action}`)
+        axios.get(`http://127.0.0.1:5000/search/${action}`)
             .then(response => {
                 console.log("Datos recibidos del backend:", response.data); // Verificar datos recibidos
                 setSelectedAction({ name: action, ...response.data });
