@@ -45,8 +45,8 @@ const ChartComponent = ({ selectedAction }) => {
                   label: `Variación de ${ticker}`,
                   data: formattedPrices,
                   fill: true,
-                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                  borderColor: 'rgba(75, 192, 192, 1)',
+                  backgroundColor: '#05357c68',
+                  borderColor: '#05347c',
                   borderWidth: 1,
                   fill: 'origin',
                 },
@@ -70,7 +70,7 @@ const ChartComponent = ({ selectedAction }) => {
       },
       title: {
         display: true,
-        text: `Variación de ${selectedAction?.name} en el último mes`,
+        text: `Variación de ${selectedAction?.name} en los últimos 3 meses`,
       },
     },
   };

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword, onAuthStateChanged  } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from '../data/firebase'; // Asegúrate de que la ruta sea correcta
-import Navbar from '../components/navbar';
-import Footer from '../components/footer';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -11,6 +10,7 @@ const Login = () => {
         password: '',
     });
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false); // Para manejar el estado de carga
     const navigate = useNavigate();
 
     // Maneja el cambio de valores en los campos de texto
@@ -19,11 +19,12 @@ const Login = () => {
     };
 
     useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                navigate('/login'); // Si el usuario ya está logueado, redirigir a la página principal
+                navigate('/'); // Redirige a la página principal si ya está logueado
             }
         });
+        return () => unsubscribe(); // Limpia la suscripción
     }, [navigate]);
 
     // Función de validación para el email
@@ -35,27 +36,27 @@ const Login = () => {
     // Función de manejo del submit
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError(null);
+        setIsLoading(true); // Inicia el estado de carga
 
         if (!validateEmail(formData.email)) {
             setError("Por favor ingresa un correo electrónico válido.");
+            setIsLoading(false); // Detiene el estado de carga en caso de error
             return;
         }
 
         try {
             await signInWithEmailAndPassword(auth, formData.email, formData.password);
-            navigate('/'); // Redirige a la página principal o dashboard después de iniciar sesión
+            navigate('/'); // Redirige a la página principal después de iniciar sesión
         } catch (error) {
             setError("E-mail o contraseña incorrectos.");
+        } finally {
+            setIsLoading(false); // Detiene el estado de carga al finalizar la solicitud
         }
-    };
-
-    const handleSearch = (query) => {
-        navigate(`/action/${query}`);
     };
 
     return (
         <>
-            <Navbar onSearch={handleSearch} />
             <div className="login-page">
                 <h1>Accede a tu cuenta</h1>
                 <form onSubmit={handleSubmit} className="login-form">
@@ -80,12 +81,14 @@ const Login = () => {
                             placeholder="Contraseña"
                             required
                         />
-                        {error && <p style={{ color: 'red', fontSize:'15px' }}>{error}</p>}
+                        {error && <p style={{ color: 'red', fontSize: '15px' }}>{error}</p>}
                     </div>
-                    <button type="submit" className="login-button">Iniciar sesión</button>
+                    <button type="submit" className="login-button" disabled={isLoading}>
+                        {isLoading ? 'Cargando...' : 'Iniciar sesión'}
+                    </button>
+                    <p style={{textAlign:'center'}}>¿Todavia no tenes un cuenta? <Link to="/register" style={{ color:"#05347c" }}>Crear cuenta</Link></p>
                 </form>
             </div>
-            <Footer/>
         </>
     );
 };

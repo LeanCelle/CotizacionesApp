@@ -14,7 +14,6 @@ const Navbar = ({ onSearch }) => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
-                console.log("Usuario:",currentUser);
                 
             } else {
                 setUser(null);
@@ -28,7 +27,6 @@ const Navbar = ({ onSearch }) => {
     const handleSignOut = async () => {
         try {
             await signOut(auth);
-            setUser(null); // Limpiar el estado del usuario
             navigate('/'); // Redirigir al inicio
         } catch (error) {
             console.error("Error al cerrar sesión: ", error);
@@ -87,7 +85,7 @@ const Navbar = ({ onSearch }) => {
             {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
-                        <p className='sure'>¿Estás seguro de que quieres cerrar sesión?</p>
+                        <p className='sure'>¿Seguro que desea cerrar sesión?</p>
                         <button className='modalButton' onClick={handleConfirmLogout}>Sí</button>
                         <button className='modalButton' onClick={handleCancelLogout}>No</button>
                     </div>

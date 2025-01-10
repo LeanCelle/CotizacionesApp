@@ -21,13 +21,14 @@ def fetch_market_info(ticker):
     last_updated = yf.Ticker(ticker).history(period='1d').index[-1].strftime('%d-%m-%Y')  # Última fecha disponible
 
     return {
+        "symbol": market_info.get("symbol"),
         "longName": market_info.get("longName"),
         "market_cap": market_info.get("marketCap"),
         "earnings_per_share": market_info.get("trailingEps"),
         "revenue": market_info.get("totalRevenue"),
         "high_52_week": market_info.get("fiftyTwoWeekHigh"),
         "low_52_week": market_info.get("fiftyTwoWeekLow"),
-        "last_updated": last_updated  # Agregando la última fecha
+        "last_updated": last_updated
     }
 
 def predict_price(ticker, start_date="2024-01-01"):
@@ -84,29 +85,37 @@ def predict():
 
     return jsonify(predictions)
 
-@app.route('/search/<ticker>', methods=['GET'])
-def search(ticker):
-    if ticker in results_cache:
-        return jsonify(results_cache[ticker])
+@app.route('/search/<query>', methods=['GET'])
+def search(query):
+    # Busca primero en el caché
+    for key, result in results_cache.items():
+        if query.lower() in [result["name"].lower(), result["longName"].lower()]:
+            return jsonify(result)
 
-    market_info = fetch_market_info(ticker)
-    current_price, prediction, percent_variation = predict_price(ticker)
+    # Si no está en caché, busca usando el nombre corto o largo
+    try:
+        market_info = fetch_market_info(query)
+        current_price, prediction, percent_variation = predict_price(query)
 
-    result = {
-        "name": ticker,
-        "current_price": current_price,
-        "prediction": prediction,
-        "percent_variation": percent_variation,
-        **market_info
-    }
+        result = {
+            "name": query,
+            "current_price": current_price,
+            "prediction": prediction,
+            "percent_variation": percent_variation,
+            **market_info
+        }
 
-    results_cache[ticker] = result
-    return jsonify(result)
+        # Agregar al caché
+        results_cache[query] = result
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 404
+
 
 @app.route('/last5days/<ticker>', methods=['GET'])
 def last5days(ticker):
     try:
-        data = yf.download(ticker, period='1mo', interval='1d')
+        data = yf.download(ticker, period='3mo', interval='1d')
 
         if data.empty:
             return {"prices": [], "dates": []}
@@ -121,6 +130,7 @@ def last5days(ticker):
 
     except Exception as e:
         return {"error": str(e)}
+
 
 if __name__ == '__main__':
     app.run(debug=True)

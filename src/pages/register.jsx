@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/navbar';
 import { registerUser } from '../data/authService';
-import Footer from '../components/footer';
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -46,18 +44,13 @@ const Register = () => {
             navigate('/'); // Redirige a la página principal
         } catch (error) {
             setError(
-                "El E-mail ingresado ya se encuentra en uso."
+                "El E-mail ingresado ya se encuentra en uso, o es incorrecto."
             );
         }
     };
 
-    const handleSearch = (query) => {
-        navigate(`/action/${query}`);
-    };
-
     return (
         <>
-            <Navbar onSearch={handleSearch} />
             <div className="register-page">
                 <h1>Registrarse</h1>
                 <form onSubmit={handleSubmit} className="register-form">
@@ -109,7 +102,6 @@ const Register = () => {
                     <button type="submit" className="register-button">Crear usuario</button>
                 </form>
             </div>
-            <Footer/>
         </>
     );
 };

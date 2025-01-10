@@ -6,6 +6,7 @@ import { auth } from '../data/firebase'; // Asegúrate de que la ruta sea correc
 
 const TableRow = ({ data, handleActionClick }) => {
     const [user, setUser] = useState(null);
+    const [alertMessage, setAlertMessage] = useState('');
 
     // Verificar si el usuario está logueado
     useEffect(() => {
@@ -20,6 +21,14 @@ const TableRow = ({ data, handleActionClick }) => {
         if (percentVariation > 5) return "Comprar";
         if (percentVariation < -5) return "Vender";
         return "Hold";
+    };
+
+    const handleIconClick = (e) => {
+        e.stopPropagation(); // Detener la propagación del evento al contenedor
+        if (!user) {
+            setAlertMessage('Debes iniciar sesión para acceder a estos detalles');
+            setTimeout(() => setAlertMessage(''), 3000); // El mensaje desaparece después de 3 segundos
+        }
     };
 
     return (
@@ -55,15 +64,48 @@ const TableRow = ({ data, handleActionClick }) => {
                 </>
             ) : (
                 <>
-                <div className="data-into"><p><FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" /></p></div>
-                <div className="data-into"><p><FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" /></p></div>
-                <div className="data-into"><p><FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" /></p></div>
+                    <div className="data-into">
+                        <p>
+                            <FontAwesomeIcon 
+                                icon={faCircleInfo} 
+                                style={{ color: '#05347c', cursor: 'pointer' }} 
+                                title="Debes iniciar sesión para acceder a estos detalles" 
+                                onClick={handleIconClick} 
+                            />
+                        </p>
+                    </div>
+                    <div className="data-into">
+                        <p>
+                            <FontAwesomeIcon 
+                                icon={faCircleInfo} 
+                                style={{ color: '#05347c', cursor: 'pointer' }} 
+                                title="Debes iniciar sesión para acceder a estos detalles" 
+                                onClick={handleIconClick} 
+                            />
+                        </p>
+                    </div>
+                    <div className="data-into">
+                        <p>
+                            <FontAwesomeIcon 
+                                icon={faCircleInfo} 
+                                style={{ color: '#05347c', cursor: 'pointer' }} 
+                                title="Debes iniciar sesión para acceder a estos detalles" 
+                                onClick={handleIconClick} 
+                            />
+                        </p>
+                    </div>
                 </>
             )}
 
             <div className="data-into"><p>{data.high_52_week !== null ? `$${data.high_52_week}` : "No disponible"}</p></div>
             <div className="data-into"><p>{data.low_52_week !== null ? `$${data.low_52_week}` : "No disponible"}</p></div>
             <div className="data-into"><p>{data.last_updated || "No disponible"}</p></div>
+
+            {alertMessage && (
+                <div className="alert-message">
+                    {alertMessage}
+                </div>
+            )}
         </div>
     );
 };
