@@ -98,8 +98,8 @@ const ActionDetails = () => {
                             <div className="data-cotizaciones-second">
                                 <p>Última Fecha: <strong>{selectedAction.last_updated || "No disponible"}</strong></p>
                                 <p>% Predicción: <strong>{user ? `${selectedAction.percent_variation?.toFixed(2) || "No disponible"}%` : <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} />}</strong></p>
-                                <p>52-Week Low: <strong>${selectedAction.low_52_week?.toFixed(2) || "No disponible"}</strong></p>
                                 <p>Earnings Per Share (EPS): <strong>${selectedAction.earnings_per_share?.toFixed(2) || "No disponible"}</strong></p>
+                                <p>52-Week Low: <strong>${selectedAction.low_52_week?.toFixed(2) || "No disponible"}</strong></p>
                             </div>
                         </div>
                     </div>
