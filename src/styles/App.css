@@ -26,8 +26,10 @@ body {
 }
 
 .data-tabla-actions-into {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  text-align: center;
   background-color: #f6f6f6;
   color: #333;
 }
@@ -564,6 +566,5 @@ body {
   90% { opacity: 1; transform: translateX(-50%) translateY(0); }
   100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
 }
-
 
 

@@ -31,15 +31,29 @@ const ChartComponent = ({ selectedAction }) => {
       axios
         .get(`${process.env.REACT_APP_BACKEND_URL}/last5days/${ticker}`)
         .then((response) => {
-          const { prices, dates } = response.data;
-          if (Array.isArray(prices) && Array.isArray(dates)) {
+          const { prices, dates, nextDayPrediction } = response.data;
+          if (
+            Array.isArray(prices) &&
+            Array.isArray(dates) &&
+            typeof nextDayPrediction === 'number'
+          ) {
             const formattedPrices = prices.map((price, index) => ({
               x: dates[index],
-              y: price
+              y: price,
             }));
 
+            // Agregar el punto de predicción
+            const extendedDates = [...dates, "Predicción"];
+            const extendedPrices = [
+              ...prices.map((price, index) => ({
+                x: dates[index],
+                y: price,
+              })),
+              { x: "Predicción", y: nextDayPrediction },
+            ];
+
             setChartData({
-              labels: dates,
+              labels: extendedDates,
               datasets: [
                 {
                   label: `Variación de ${ticker}`,
@@ -50,10 +64,23 @@ const ChartComponent = ({ selectedAction }) => {
                   borderWidth: 1,
                   fill: 'origin',
                 },
+                {
+                  label: `Predicción para el próximo día`,
+                  data: extendedPrices,
+                  borderColor: '#FF4500',
+                  borderDash: [5, 5], // Línea punteada
+                  borderWidth: 2,
+                  pointBackgroundColor: '#FF4500',
+                  pointBorderColor: '#FF4500',
+                  borderWidth: 1,
+                  pointStyle: 'rectRot',
+                },
               ],
             });
           } else {
-            console.error("Datos inválidos: Los campos 'prices' o 'dates' no son arrays.");
+            console.error(
+              "Datos inválidos: Los campos 'prices', 'dates' o 'nextDayPrediction' no son válidos."
+            );
           }
         })
         .catch((error) => {
@@ -73,14 +100,30 @@ const ChartComponent = ({ selectedAction }) => {
         text: `Variación de ${selectedAction?.name} en los últimos 3 meses`,
       },
     },
+    scales: {
+      x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Fecha',
+        },
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Precio',
+        },
+      },
+    },
   };
 
   return (
-    <div style={{ width: '100%', margin: 'auto', textAlign:'center', }}>
+    <div style={{ width: '100%', margin: 'auto', textAlign: 'center' }}>
       {chartData ? (
         <Line data={chartData} options={options} />
       ) : (
-        <LoadingLogo loading={true} logoSrc={null}/>
+        <LoadingLogo loading={true} logoSrc={null} />
       )}
     </div>
   );

@@ -16,23 +16,22 @@ def home():
 
 
 def fetch_market_info(ticker):
-    """Obtiene información del mercado para un ticker dado."""
+    """Obtiene información relevante del mercado para un ticker dado."""
     market_info = yf.Ticker(ticker).info
-    last_updated = yf.Ticker(ticker).history(period='1d').index[-1].strftime('%d-%m-%Y')  # Última fecha disponible
+    last_updated = yf.Ticker(ticker).history(period='1d').index[-1].strftime('%d-%m-%Y')
 
     return {
         "symbol": market_info.get("symbol"),
         "longName": market_info.get("longName"),
-        "market_cap": market_info.get("marketCap"),
-        "earnings_per_share": market_info.get("trailingEps"),
-        "revenue": market_info.get("totalRevenue"),
+        "beta": market_info.get("beta"),
+        "volume": market_info.get("volume"),
         "high_52_week": market_info.get("fiftyTwoWeekHigh"),
         "low_52_week": market_info.get("fiftyTwoWeekLow"),
         "last_updated": last_updated
     }
 
 def predict_price(ticker, start_date="2024-01-01"):
-    """Genera una predicción de precios usando Prophet con configuración mejorada."""
+    """Genera una predicción de precios usando Prophet con métricas relevantes."""
     try:
         data = yf.download(ticker, start=start_date, end=(pd.to_datetime('today') + pd.Timedelta(days=1)).strftime('%Y-%m-%d'))
         if data.empty:
@@ -42,7 +41,7 @@ def predict_price(ticker, start_date="2024-01-01"):
         df = data[['Close']].reset_index()
         df.columns = ['ds', 'y']
 
-        # Ajustar Prophet con mejores configuraciones
+        # Modelo Prophet ajustado
         model = Prophet(yearly_seasonality=True, daily_seasonality=True, weekly_seasonality=True)
         model.fit(df)
 
@@ -54,10 +53,8 @@ def predict_price(ticker, start_date="2024-01-01"):
         percent_variation = round(((prediction - current_price) / current_price) * 100, 2)
 
         return current_price, prediction, percent_variation
-    except KeyError as e:
-        return None, None, f"KeyError: {str(e)}"
     except Exception as e:
-        return None, None, f"Unexpected error: {str(e)}"
+        return None, None, f"Error: {str(e)}"
 
 @app.route('/predict', methods=['GET'])
 def predict():
@@ -115,21 +112,27 @@ def search(query):
 @app.route('/last5days/<ticker>', methods=['GET'])
 def last5days(ticker):
     try:
+        # Obtener datos históricos de los últimos 3 meses
         data = yf.download(ticker, period='3mo', interval='1d')
 
         if data.empty:
-            return {"prices": [], "dates": []}
+            return {"prices": [], "dates": [], "nextDayPrediction": None}
 
         prices = data['Close'].values.tolist()
         dates = data.index.strftime('%d-%m').tolist()
 
-        if not isinstance(prices, list) or not isinstance(dates, list):
-            return {"error": "Datos incompletos para 'prices' o 'dates'"}
+        # Agregar predicción del precio para el próximo día
+        _, next_day_prediction, _ = predict_price(ticker)
 
-        return {"prices": prices, "dates": dates}
+        return {
+            "prices": prices,
+            "dates": dates,
+            "nextDayPrediction": next_day_prediction
+        }
 
     except Exception as e:
         return {"error": str(e)}
+
 
 
 if __name__ == '__main__':

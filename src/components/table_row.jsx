@@ -44,7 +44,13 @@ const TableRow = ({ data, handleActionClick }) => {
             {user ? (
                 <>
                     <div className="data-into">
-                        <p>{data.prediction !== null ? `$${data.prediction.toFixed(2)}` : "No disponible"}</p>
+                        <p style={{
+                            color: data.percent_variation > 0
+                                ? 'green'
+                                : data.percent_variation < 0
+                                ? 'red'
+                                : 'black'
+                        }}>{data.prediction !== null ? `$${data.prediction.toFixed(2)}` : "No disponible"}</p>
                     </div>
                     <div
                         className="data-into"

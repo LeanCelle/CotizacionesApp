@@ -83,7 +83,7 @@ const ActionDetails = () => {
                                 
                                 {user ? (
                                     <>
-                                        <p>$ Predicción: <strong>${selectedAction.prediction?.toFixed(2) || "No disponible"}</strong></p>
+                                        <p>$ Predicción: <strong style={{ color: selectedAction.percent_variation > 0 ? "green": selectedAction.percent_variation < 0? "red": "black",}}>${selectedAction.prediction?.toFixed(2) || "No disponible"}</strong></p>
                                         <p>Recomendación: <strong>{getRecommendation(selectedAction.percent_variation)}</strong></p>
                                     </>
                                 ) : (
@@ -97,7 +97,8 @@ const ActionDetails = () => {
                             </div>
                             <div className="data-cotizaciones-second">
                                 <p>Última Fecha: <strong>{selectedAction.last_updated || "No disponible"}</strong></p>
-                                <p>% Predicción: <strong>{user ? `${selectedAction.percent_variation?.toFixed(2) || "No disponible"}%` : <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} />}</strong></p>
+                                <p>% Predicción: <strong style={{ color: selectedAction.percent_variation > 0 ? "green": selectedAction.percent_variation < 0? "red": "black",}}>{user ? `${selectedAction.percent_variation?.toFixed(2) || "No disponible"}%` : <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick}  />}</strong>
+                                </p>
                                 <p>Earnings Per Share (EPS): <strong>${selectedAction.earnings_per_share?.toFixed(2) || "No disponible"}</strong></p>
                                 <p>52-Week Low: <strong>${selectedAction.low_52_week?.toFixed(2) || "No disponible"}</strong></p>
                             </div>
