@@ -4,8 +4,9 @@ services:
     env: python
     buildCommand: ""
     startCommand: gunicorn app:app --chdir backend
+
   - type: web
-    name: app
+    name: news
     env: python
     buildCommand: ""
-    startCommand: gunicorn news:app --chdir backend
+    startCommand: uvicorn news:app --chdir backend --host 0.0.0.0 --port 8000
