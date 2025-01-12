@@ -72,7 +72,10 @@ const ActionDetails = () => {
                     </p>
                     <p className="DataCotizaciones">
                             <strong>{selectedAction.name}, {selectedAction.longName}</strong>
-                        </p>
+                    </p>
+                    <p className="DataCotizacionesSector">
+                        {selectedAction.sector} {selectedAction.industry}
+                    </p>
                     <div className="chart-container">
                         <ChartComponent selectedAction={selectedAction} />
                     </div>

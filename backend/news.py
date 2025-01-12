@@ -20,11 +20,12 @@ API_KEY = "1f4082a069ca452ba1daa5cf0336c12b"  # Usa tu clave de NewsAPI
 def read_root():
     return {"message": "Bienvenido a la API de noticias de acciones"}
 
-
 @app.get("/news")
 def get_stock_news():
     """
-    Endpoint para obtener noticias de acciones con texto e imágenes.
+    Endpoint para obtener noticias de acciones con texto e imágenes,
+    excluyendo las noticias de 'La Jornada' basándonos en la URL de la imagen,
+    y eliminando noticias repetidas.
     """
     params = {
         "q": "Nasdaq",  # Palabras clave para buscar
@@ -40,7 +41,7 @@ def get_stock_news():
     data = response.json()
     articles = data.get("articles", [])
 
-    # Filtrar noticias que tienen imágenes válidas
+    # Filtrar noticias que tienen imágenes válidas y no contienen 'www.jornada.com' en la URL de la imagen
     news = [
         {
             "title": article.get("title"),
@@ -48,10 +49,19 @@ def get_stock_news():
             "image": article.get("urlToImage") if article.get("urlToImage") else None,
             "url": article.get("url")
         }
-        for article in articles if article.get("urlToImage")  # Solo incluir artículos con imagen
+        for article in articles
+        if article.get("urlToImage") and "www.jornada.com" not in article.get("urlToImage", "")
     ]
 
     # Eliminar noticias que tengan imagen como None (es decir, si no hay imagen)
     news = [article for article in news if article['image'] is not None]
 
-    return {"news": news}
+    # Eliminar noticias repetidas basándonos en el título
+    seen_titles = set()
+    unique_news = []
+    for article in news:
+        if article["title"] not in seen_titles:
+            unique_news.append(article)
+            seen_titles.add(article["title"])
+
+    return {"news": unique_news}

@@ -28,6 +28,8 @@ def fetch_market_info(ticker):
         "high_52_week": market_info.get("fiftyTwoWeekHigh"),
         "low_52_week": market_info.get("fiftyTwoWeekLow"),
         "earnings_per_share": market_info.get("trailingEps"),
+        "sector": market_info.get("sector"),
+        "industry": market_info.get("industry"),
         "last_updated": last_updated
     }
 

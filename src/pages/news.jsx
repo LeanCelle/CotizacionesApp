@@ -5,6 +5,8 @@ import LoadingLogo from "../components/loading_logo";
 const News = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [articlesPerPage] = useState(15);
 
   useEffect(() => {
     // Obtener las noticias desde el backend
@@ -20,20 +22,29 @@ const News = () => {
       });
   }, []);
 
+  // Calcular el índice de inicio y fin de los artículos a mostrar
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = news.slice(indexOfFirstArticle, indexOfLastArticle);
+
+  // Cambiar la página y hacer scroll hacia arriba
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll suave hacia la parte superior
+  };
+
   if (loading) {
-    return <LoadingLogo loading={true} logoSrc={null}/>;
+    return <LoadingLogo loading={true} logoSrc={null} />;
   }
 
   return (
     <div className="news-container">
-      {news.length === 0 ? (
-        <>
-        <div style={{height:'74vh'}}>
-            <p>No se encontraron noticias.</p>
+      {currentArticles.length === 0 ? (
+        <div style={{ height: "74vh" }}>
+          <p>No se encontraron noticias.</p>
         </div>
-        </>
       ) : (
-        news.map((item, index) => (
+        currentArticles.map((item, index) => (
           <div key={index} className="news-card">
             {item.image && (
               <img
@@ -56,6 +67,20 @@ const News = () => {
             </div>
           </div>
         ))
+      )}
+      {/* Paginación */}
+      {news.length > articlesPerPage && (
+        <div className="pagination">
+          {Array.from({ length: Math.ceil(news.length / articlesPerPage) }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => paginate(index + 1)}
+              className={index + 1 === currentPage ? "active" : ""}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       )}
     </div>
   );
