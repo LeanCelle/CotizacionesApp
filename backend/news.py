@@ -7,10 +7,10 @@ app = FastAPI()
 # Habilitar CORS para solicitudes desde tu frontend (localhost:3005)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Cambia a tu URL de frontend si es diferente
+    allow_origins=["https://cotizaciones-app.vercel.app"],  # Cambia esto con el dominio exacto de tu frontend
     allow_credentials=True,
-    allow_methods=["*"],  # Permitir todos los métodos HTTP
-    allow_headers=["*"],  # Permitir todos los encabezados
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 API_URL = "https://newsapi.org/v2/everything"
