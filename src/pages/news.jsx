@@ -9,7 +9,7 @@ const News = () => {
   useEffect(() => {
     // Obtener las noticias desde el backend
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/news`) // Ajusta la URL si está desplegado
+      .get(`${process.env.REACT_APP_NEWS_URL}/news`) // Ajusta la URL si está desplegado
       .then((response) => {
         setNews(response.data.news || []);
         setLoading(false);
