@@ -4,3 +4,8 @@ services:
     env: python
     buildCommand: ""
     startCommand: gunicorn app:app --chdir backend
+  - type: web
+    name: app
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn news:app --chdir backend

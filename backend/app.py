@@ -12,7 +12,7 @@ results_cache = {}
 
 @app.route('/', methods=['GET'])
 def home():
-    return "Welcome to Cotizaciones App API"
+    return "Welcome to Cotizaciones.App API"
 
 
 def fetch_market_info(ticker):
@@ -27,6 +27,7 @@ def fetch_market_info(ticker):
         "volume": market_info.get("volume"),
         "high_52_week": market_info.get("fiftyTwoWeekHigh"),
         "low_52_week": market_info.get("fiftyTwoWeekLow"),
+        "earnings_per_share": market_info.get("trailingEps"),
         "last_updated": last_updated
     }
 

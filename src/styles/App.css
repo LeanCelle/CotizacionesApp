@@ -568,3 +568,63 @@ body {
 }
 
 
+/* News */
+
+.news-container {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.news-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.news-content {
+  padding: 15px;
+}
+
+.news-title {
+  font-size: 1.2rem;
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.news-description {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.news-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}
+
+.news-loading {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 50px;
+}
+
+
+

@@ -6,6 +6,7 @@ import Register from './pages/register';
 import ActionDetails from './pages/chartPage';
 import Login from './pages/login';
 import Layout from './pages/layout';
+import News from './pages/news';
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
                     <Route path="/register" element={<Register />} />
                     <Route path="/action/:action" element={<ActionDetails />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/news" element={<News />} />
                 </Route>
             </Routes>
         </Router>

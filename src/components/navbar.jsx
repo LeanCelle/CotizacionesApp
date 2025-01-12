@@ -60,6 +60,7 @@ const Navbar = ({ onSearch }) => {
                 <SearchBar onSearch={onSearch} />
                 <div className="navbar-container-links">
                     <ul className="navbar-links">
+                        <Link to="/news" style={{textDecoration:'none' }}><li className="ingresar">Noticias</li></Link>
                         {user ? (
                             <>
                                 <li className="user-info">{user.displayName}</li>
