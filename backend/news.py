@@ -16,6 +16,11 @@ app.add_middleware(
 API_URL = "https://newsapi.org/v2/everything"
 API_KEY = "1f4082a069ca452ba1daa5cf0336c12b"  # Usa tu clave de NewsAPI
 
+@app.get("/")
+def read_root():
+    return {"message": "Bienvenido a la API de noticias de acciones"}
+
+
 @app.get("/news")
 def get_stock_news():
     """
