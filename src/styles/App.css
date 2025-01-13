@@ -40,7 +40,7 @@ body {
   color: #333;
 }
 .data:hover {
-  color: #979797;
+  color: #6c6c6c;
 }
 
 .data-into {
@@ -107,6 +107,11 @@ body {
 
 /* Chart */
 
+.chart {
+  width: 80%;
+  margin: 0px auto;
+  text-align: center;
+}
 .chart-big-container {
   background-color: #ffffff;
   display: flex;
@@ -536,7 +541,7 @@ body {
   border-radius: 4px;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 1001;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -626,12 +631,6 @@ body {
   text-decoration: underline;
 }
 
-.news-loading {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-top: 50px;
-}
-
 /* Paginator */
 
 .pagination {
@@ -659,6 +658,320 @@ body {
   background-color: #ffffff;
   color: #3b3bcf;
 }
+
+
+
+
+/* Ocultar menú hamburguesa en dispositivos más grandes */
+.navbar-hamburger {
+  display: none;
+}
+
+/* Mostrar menú hamburguesa en dispositivos móviles */
+@media (max-width: 768px) {
+  .navbar-hamburger {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 25px;
+  }
+  .line {
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 3px 0;
+    transition: all 0.3s ease;
+  }
+  
+  /* Efecto de transformación cuando el menú está abierto */
+  .line.open:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .line.open:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .line.open:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .navbar-container-links {
+      display: none;
+      flex-direction: column;
+      background-color: white; /* Ajusta según tu diseño */
+      position: absolute;
+      top: 60px; /* Ajusta según la altura de tu navbar */
+      right: 0;
+      width: 100%; /* O el tamaño deseado */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+  }
+
+  .navbar-container-title {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar {
+    display: flex;
+  }
+  .navbar-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .navbar-container-links.active {
+      display: flex;
+  }
+  
+  .search-bar {
+    display: none;
+  }
+
+  .search-bar-mobile {
+    position: absolute;
+    top: 42px; /* Justo debajo del navbar */
+    right: 0;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    z-index: 1000; /* Para asegurar que esté encima del contenido */
+  }
+  
+  .search-bar-mobile input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .search-button-mobile {
+    padding: 8px 12px;
+    background-color: #05347c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .search-bar-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .search-bar-container .search-bar {
+      display: flex;
+  }
+
+  .search-icon {
+      display: flex;
+      border: none;
+      background-color: #ffffff00;
+  }
+  .logout {
+    font-size: 14px;
+  }
+  .registrarse {
+    font-size: 14px;
+  }
+  .ingresar {
+    font-size: 14px;
+  }
+
+
+  
+  .d {
+    display: none;
+  }
+  .data-into {
+    font-size: 14px;
+  }
+  .data-tabla-actions-into {
+    font-size: 14px;
+  }
+  
+  .footer-socials a {
+    font-size: 18px;
+  }
+  
+  .footer-bottom {
+    font-size: 12px;
+  }
+
+
+
+  /* Register */
+
+.register-page h1 {
+  font-size: 30px;
+}
+
+.register-form input {
+  font-size: 14px;
+}
+
+.register-button {
+  font-size: 16px;
+}
+
+
+/* Login */
+
+.login-page h1 {
+  font-size: 30px;
+}
+
+.login-error {
+  color: red;
+  font-size: 14px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group input {
+  font-size: 14px;
+}
+
+.login-button {
+  font-size: 16px;
+}
+.notAccount {
+  font-size: 14px;
+}
+
+/* News */
+
+.news-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.news-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.news-image {
+  width: 100%;
+}
+
+.news-content {
+  padding: 15px;
+}
+
+.news-title {
+  font-size: 16px;
+  margin: 0 0 10px;
+  color: #333;
+  word-wrap: break-word;
+}
+
+.news-description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.news-link {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+/* Chart */
+.chart {
+  width: 100%;
+}
+.chart-big-container {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-container-info {
+  background-color: #ffffff;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #333;
+}
+
+.DataCotizaciones {
+  font-size: 26px;
+  margin: 0px 0px 10px 0px;
+}
+
+.DataCotizacionesSector {
+  font-size: 18px;
+  margin: 0px 0px 20px 0px;
+}
+
+.data-cotizaciones-container {
+  width: 90%;
+  display: flex;
+  margin: 0px auto;
+  padding: 40px 0px 40px 0px;
+  gap: 10px;
+}
+.data-cotizaciones-first {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.data-cotizaciones-first p {
+  font-size: 14px;
+  border-bottom: #ccc 1px solid;
+  padding-bottom: 5px;
+}
+
+.data-cotizaciones-second {
+  font-size: 14px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.data-cotizaciones-second p {
+  border-bottom: #ccc 1px solid;
+  padding-bottom: 5px;
+}
+
+.chart-container {
+  width: auto;
+  height: auto;
+  display: flex;
+  margin: 0px auto;
+  background-color: rgb(255, 255, 255);
+}
+
+.back-button {
+  margin: 25px 0px 30px 25px;
+  font-size: 14px;
+}
+}
+
+
+
+
 
 
 

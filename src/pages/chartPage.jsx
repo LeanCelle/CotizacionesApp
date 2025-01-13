@@ -76,9 +76,7 @@ const ActionDetails = () => {
                     <p className="DataCotizacionesSector">
                         {selectedAction.sector} {selectedAction.industry}
                     </p>
-                    <div className="chart-container">
-                        <ChartComponent selectedAction={selectedAction} />
-                    </div>
+                    <ChartComponent selectedAction={selectedAction} />
                     <div className="chart-container-info">
                         <div className="data-cotizaciones-container">
                             <div className="data-cotizaciones-first">
@@ -102,7 +100,7 @@ const ActionDetails = () => {
                                 <p>Última Fecha: <strong>{selectedAction.last_updated || "No disponible"}</strong></p>
                                 <p>% Predicción: <strong style={{ color: selectedAction.percent_variation > 0 ? "green": selectedAction.percent_variation < 0? "red": "black",}}>{user ? `${selectedAction.percent_variation?.toFixed(2) || "No disponible"}%` : <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick}  />}</strong>
                                 </p>
-                                <p>Earnings Per Share (EPS): <strong>${selectedAction.earnings_per_share?.toFixed(2) || "No disponible"}</strong></p>
+                                <p>EPS: <strong>${selectedAction.earnings_per_share?.toFixed(2) || "No disponible"}</strong></p>
                                 <p>52-Week Low: <strong>${selectedAction.low_52_week?.toFixed(2) || "No disponible"}</strong></p>
                             </div>
                         </div>

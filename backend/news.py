@@ -7,7 +7,7 @@ app = FastAPI()
 # Habilitar CORS para solicitudes desde tu frontend (localhost:3005)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://cotizaciones-app.vercel.app"],  # Cambia esto con el dominio exacto de tu frontend
+    allow_origins=["https://cotizaciones-app.vercel.app"], # Cambia esto con el dominio exacto de tu frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

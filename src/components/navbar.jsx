@@ -8,6 +8,25 @@ const Navbar = ({ onSearch }) => {
     const [user, setUser] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+    const toggleMenu = () => {
+      setIsOpen(!isOpen);
+    };
+
+    useEffect(() => {
+        setIsOpen(false);
+      }, [navigate]);      
+
+    useEffect(() => {
+        const handleResize = () => {
+          setIsMobile(window.innerWidth < 768);
+        };
+    
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+      }, []);
 
     // Verificar si el usuario está logueado
     useEffect(() => {
@@ -52,13 +71,18 @@ const Navbar = ({ onSearch }) => {
     return (
         <nav className="navbar">
             <div className="navbar-container">
+                <div className="navbar-hamburger" onClick={toggleMenu}>
+                    <div className={`line ${isOpen ? 'open' : ''}`}></div>
+                    <div className={`line ${isOpen ? 'open' : ''}`}></div>
+                    <div className={`line ${isOpen ? 'open' : ''}`}></div>
+                </div>
                 <div className="navbar-container-title">
                     <Link to="/" style={{textDecoration:'none', border:'none' }}>
                         <img className="logo-navbar" src="/img/logo.png" alt="Cotizaciones.App." />
                     </Link>
                 </div>
                 <SearchBar onSearch={onSearch} />
-                <div className="navbar-container-links">
+                <div className={`navbar-container-links ${isOpen ? 'active' : ''}`}>
                     <ul className="navbar-links">
                         <Link to="/news" style={{textDecoration:'none' }}><li className="ingresar">Noticias</li></Link>
                         {user ? (

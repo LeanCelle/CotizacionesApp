@@ -65,7 +65,7 @@ const ChartComponent = ({ selectedAction }) => {
                   fill: 'origin',
                 },
                 {
-                  label: `Predicción para el próximo día`,
+                  label: `Predicción`,
                   data: extendedPrices,
                   borderColor: '#FF4500',
                   borderDash: [5, 5], // Línea punteada
@@ -119,7 +119,7 @@ const ChartComponent = ({ selectedAction }) => {
   };
 
   return (
-    <div style={{ width: '100%', margin: 'auto', textAlign: 'center' }}>
+    <div className='chart'>
       {chartData ? (
         <Line data={chartData} options={options} />
       ) : (

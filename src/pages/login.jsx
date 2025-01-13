@@ -86,7 +86,7 @@ const Login = () => {
                     <button type="submit" className="login-button" disabled={isLoading}>
                         {isLoading ? 'Cargando...' : 'Iniciar sesión'}
                     </button>
-                    <p style={{textAlign:'center'}}>¿Todavia no tenes un cuenta? <Link to="/register" style={{ color:"#05347c" }}>Crear cuenta</Link></p>
+                    <p className='notAccount' style={{textAlign:'center'}}>¿Todavia no tenes un cuenta? <Link to="/register" style={{ color:"#05347c" }}>Crear cuenta</Link></p>
                 </form>
             </div>
         </>

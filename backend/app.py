@@ -18,7 +18,7 @@ def home():
 def fetch_market_info(ticker):
     """Obtiene información relevante del mercado para un ticker dado."""
     market_info = yf.Ticker(ticker).info
-    last_updated = yf.Ticker(ticker).history(period='1d').index[-1].strftime('%d-%m-%Y')
+    last_updated = yf.Ticker(ticker).history(period='1d').index[-1].strftime('%d-%m')
 
     return {
         "symbol": market_info.get("symbol"),

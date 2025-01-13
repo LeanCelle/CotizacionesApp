@@ -67,7 +67,7 @@ const DataTable = ({ data, selectedAction, handleActionClick, getRecommendation 
                                 onClick={() => toggleSortOrder('name')}
                             />
                         </div>
-                        <div className='data-tabla-actions-into'>
+                        <div className='data-tabla-actions-into d'>
                             <p>Nombre</p>
                             <FontAwesomeIcon
                                 icon={faSort}
@@ -81,16 +81,17 @@ const DataTable = ({ data, selectedAction, handleActionClick, getRecommendation 
                         <div className='data-tabla-actions-into'>
                             <p>% Predicción</p>
                             <FontAwesomeIcon
+                                className='d'
                                 icon={faSort}
                                 style={{ marginLeft: '8px', cursor: 'pointer' }}
                                 title="Ordenar por % Predicción"
                                 onClick={() => toggleSortOrder('percent_variation')}
                             />
                         </div>
-                        <div className='data-tabla-actions-into'><p>Recomendación</p></div>
-                        <div className='data-tabla-actions-into'><p>52-Week High</p></div>
-                        <div className='data-tabla-actions-into'><p>52-Week Low</p></div>
-                        <div className='data-tabla-actions-into'><p>Última Fecha</p></div>
+                        <div className='data-tabla-actions-into d'><p>Recomendación</p></div>
+                        <div className='data-tabla-actions-into d'><p>52-Week High</p></div>
+                        <div className='data-tabla-actions-into d'><p>52-Week Low</p></div>
+                        <div className='data-tabla-actions-into d'><p>Última Fecha</p></div>
                     </div>
                     {sortedData.map((info, index) => (
                         <TableRow
