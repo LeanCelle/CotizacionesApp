@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from '../data/firebase'; // Asegúrate de que la ruta sea correcta
+import { auth } from '../data/firebase';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
@@ -10,10 +10,9 @@ const Login = () => {
         password: '',
     });
     const [error, setError] = useState(null);
-    const [isLoading, setIsLoading] = useState(false); // Para manejar el estado de carga
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    // Maneja el cambio de valores en los campos de texto
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -21,10 +20,10 @@ const Login = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                navigate('/'); // Redirige a la página principal si ya está logueado
+                navigate('/');
             }
         });
-        return () => unsubscribe(); // Limpia la suscripción
+        return () => unsubscribe();
     }, [navigate]);
 
     // Función de validación para el email
@@ -33,25 +32,24 @@ const Login = () => {
         return regex.test(email);
     };
 
-    // Función de manejo del submit
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
-        setIsLoading(true); // Inicia el estado de carga
+        setIsLoading(true);
 
         if (!validateEmail(formData.email)) {
             setError("Por favor ingresa un correo electrónico válido.");
-            setIsLoading(false); // Detiene el estado de carga en caso de error
+            setIsLoading(false);
             return;
         }
 
         try {
             await signInWithEmailAndPassword(auth, formData.email, formData.password);
-            navigate('/'); // Redirige a la página principal después de iniciar sesión
+            navigate('/');
         } catch (error) {
             setError("E-mail o contraseña incorrectos.");
         } finally {
-            setIsLoading(false); // Detiene el estado de carga al finalizar la solicitud
+            setIsLoading(false);
         }
     };
 
@@ -79,6 +77,7 @@ const Login = () => {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Contraseña"
+                            autoComplete="off"
                             required
                         />
                         {error && <p style={{ color: 'red', fontSize: '15px' }}>{error}</p>}

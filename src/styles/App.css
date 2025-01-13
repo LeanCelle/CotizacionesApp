@@ -56,7 +56,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 74vh; /* Asegura que ocupe toda la altura de la pantalla */
+  min-height: 74vh;
 }
 
 
@@ -192,7 +192,7 @@ body {
   text-decoration: underline;
 }
 
-/* Navbar CSS */
+/* Navbar */
 .navbar {
   background-color: #f6f6f6;
   padding: 10px 0;
@@ -265,7 +265,7 @@ body {
   cursor: pointer;
 }
 
-/* styles/SearchBar.css */
+/* SearchBar */
 .search-bar {
   width: 50%;
   display: flex;
@@ -372,7 +372,7 @@ body {
   cursor: pointer;
 }
 
-/* Estilos del modal */
+/* Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -523,9 +523,6 @@ body {
   margin: 0;
 }
 
-
-/* Sugerencias */
-
 .search-bar-container {
   position: relative;
   width: 100%;
@@ -559,19 +556,19 @@ body {
 }
 
 .alert-message {
-  color: #fff; /* Texto blanco */
-  background-color: #ff4d4f; /* Fondo rojo claro */
-  padding: 10px 20px; /* Espaciado interno */
-  border-radius: 5px; /* Bordes redondeados */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
-  text-align: center; /* Texto centrado */
-  font-size: 14px; /* Tamaño de fuente */
-  font-weight: bold; /* Texto en negrita */
-  position: fixed; /* Posición fija */
-  top: 20px; /* Distancia desde la parte superior */
-  left: 50%; /* Centrado horizontal */
-  transform: translateX(-50%); /* Ajuste para centrar */
-  z-index: 1000; /* Prioridad sobre otros elementos */
+  color: #fff;
+  background-color: #ff4d4f;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
   animation: fadeInOut 3s ease-in-out;
 }
 
@@ -660,15 +657,12 @@ body {
 }
 
 
-
-
-/* Ocultar menú hamburguesa en dispositivos más grandes */
 .navbar-hamburger {
   display: none;
 
 }
 
-/* Mostrar menú hamburguesa en dispositivos móviles */
+/* Media query */
 @media (max-width: 768px) {
   .navbar-hamburger {
     width: 100%;
@@ -685,7 +679,6 @@ body {
     transition: all 0.3s ease;
   }
   
-  /* Efecto de transformación cuando el menú está abierto */
   .line.open:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
   }
@@ -701,11 +694,11 @@ body {
   .navbar-container-links {
       display: none;
       flex-direction: column;
-      background-color: white; /* Ajusta según tu diseño */
+      background-color: white;
       position: absolute;
-      top: 60px; /* Ajusta según la altura de tu navbar */
+      top: 60px;
       right: 0;
-      width: 100%; /* O el tamaño deseado */
+      width: 100%;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       z-index: 999;
   }
@@ -734,13 +727,13 @@ body {
 
   .search-bar-mobile {
     position: absolute;
-    top: 42px; /* Justo debajo del navbar */
+    top: 42px;
     right: 0;
     background-color: white;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
-    z-index: 1000; /* Para asegurar que esté encima del contenido */
+    z-index: 1000;
   }
   
   .search-bar-mobile input {

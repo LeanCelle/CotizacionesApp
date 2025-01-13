@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../data/firebase'; // Asegúrate de que la ruta sea correcta
+import { auth } from '../data/firebase';
 import SearchBar from './search';
 
 const Navbar = ({ onSearch }) => {
@@ -28,7 +28,6 @@ const Navbar = ({ onSearch }) => {
         return () => window.removeEventListener('resize', handleResize);
       }, []);
 
-    // Verificar si el usuario está logueado
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
@@ -39,31 +38,28 @@ const Navbar = ({ onSearch }) => {
             }
         });
 
-        return () => unsubscribe(); // Limpiar el observador al desmontar
+        return () => unsubscribe();
     }, []);
 
     // Función para cerrar sesión
     const handleSignOut = async () => {
         try {
             await signOut(auth);
-            navigate('/'); // Redirigir al inicio
+            navigate('/');
         } catch (error) {
             console.error("Error al cerrar sesión: ", error);
         }
     };
 
-    // Mostrar modal de confirmación
     const handleLogoutClick = () => {
         setIsModalOpen(true);
     };
 
-    // Función para manejar la confirmación del modal
     const handleConfirmLogout = () => {
         handleSignOut();
         setIsModalOpen(false);
     };
 
-    // Función para manejar la cancelación del modal
     const handleCancelLogout = () => {
         setIsModalOpen(false);
     };
@@ -106,7 +102,6 @@ const Navbar = ({ onSearch }) => {
                 </div>
             </div>
 
-            {/* Modal de confirmación de cierre de sesión */}
             {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">

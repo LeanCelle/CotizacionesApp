@@ -10,7 +10,8 @@ const Register = () => {
         password: '',
     });
 
-    const [error, setError] = useState(null); // Para manejar errores
+    const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -28,81 +29,83 @@ const Register = () => {
         // Validación de contraseña
         if (!validatePassword(formData.password)) {
             setError(
-                "La contraseña debe tener al menos 7 caracteres, incluir una mayúscula y un carácter especial."
+                'La contraseña debe tener al menos 7 caracteres, incluir una mayúscula y un carácter especial.'
             );
             return;
         }
 
+        setIsSubmitting(true);
+
         try {
-            // Llama a la función registerUser con los datos del formulario
+            
             await registerUser(
                 formData.firstName,
                 formData.lastName,
                 formData.email,
                 formData.password
             );
-            navigate('/'); // Redirige a la página principal
+            navigate('/');
         } catch (error) {
-            setError(
-                "El E-mail ingresado ya se encuentra en uso, o es incorrecto."
-            );
+            setError('El E-mail ingresado ya se encuentra en uso, o es incorrecto.');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <>
-            <div className="register-page">
-                <h1>Registrarse</h1>
-                <form onSubmit={handleSubmit} className="register-form">
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            id="firstName"
-                            name="firstName"
-                            value={formData.firstName}
-                            onChange={handleChange}
-                            placeholder="Nombre"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            id="lastName"
-                            name="lastName"
-                            value={formData.lastName}
-                            onChange={handleChange}
-                            placeholder="Apellido"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="E-Mail"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            placeholder="Contraseña"
-                            required
-                        />
-                        {error && <p style={{ color: 'red', fontSize:'15px' }}>{error}</p>} {/* Mostrar errores */}
-                    </div>
-                    <button type="submit" className="register-button">Crear usuario</button>
-                </form>
-            </div>
-        </>
+        <div className="register-page">
+            <h1>Registrarse</h1>
+            <form onSubmit={handleSubmit} className="register-form">
+                <div className="form-group">
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        placeholder="Nombre"
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        placeholder="Apellido"
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="E-Mail"
+                        required
+                    />
+                </div>
+                <div className="form-group">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Contraseña"
+                        required
+                    />
+                    {error && <p style={{ color: 'red', fontSize: '15px' }}>{error}</p>}
+                </div>
+                <button type="submit" className="register-button" disabled={isSubmitting}>
+                    {isSubmitting ? 'Creando usuario...' : 'Crear usuario'}
+                </button>
+            </form>
+        </div>
     );
 };
 

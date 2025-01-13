@@ -25,7 +25,7 @@ const SearchBar = ({ onSearch }) => {
         if (onSearch) {
             onSearch(query);
         }
-        setIsExpanded(false); // Oculta el input después de buscar
+        setIsExpanded(false);
     };
 
     const toggleSearch = () => {

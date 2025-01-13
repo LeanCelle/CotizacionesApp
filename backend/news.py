@@ -1,20 +1,19 @@
 import requests
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # Importar CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Habilitar CORS para solicitudes desde tu frontend (localhost:3005)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://cotizaciones-app.vercel.app"], # Cambia esto con el dominio exacto de tu frontend
+    allow_origins=["https://cotizaciones-app.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 API_URL = "https://newsapi.org/v2/everything"
-API_KEY = "1f4082a069ca452ba1daa5cf0336c12b"  # Usa tu clave de NewsAPI
+API_KEY = "1f4082a069ca452ba1daa5cf0336c12b"
 
 @app.get("/")
 def read_root():
@@ -28,8 +27,8 @@ def get_stock_news():
     y eliminando noticias repetidas.
     """
     params = {
-        "q": "Nasdaq",  # Palabras clave para buscar
-        "language": "es",  # Cambiar a "es" si quieres en español
+        "q": "Nasdaq",
+        "language": "es",
         "sortBy": "publishedAt",
         "apiKey": API_KEY
     }
@@ -41,7 +40,6 @@ def get_stock_news():
     data = response.json()
     articles = data.get("articles", [])
 
-    # Filtrar noticias que tienen imágenes válidas y no contienen 'www.jornada.com' en la URL de la imagen
     news = [
         {
             "title": article.get("title"),
@@ -53,7 +51,6 @@ def get_stock_news():
         if article.get("urlToImage") and "www.jornada.com" not in article.get("urlToImage", "")
     ]
 
-    # Eliminar noticias que tengan imagen como None (es decir, si no hay imagen)
     news = [article for article in news if article['image'] is not None]
 
     # Eliminar noticias repetidas basándonos en el título

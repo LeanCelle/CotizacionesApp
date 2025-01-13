@@ -8,26 +8,46 @@ const Footer = () => {
         <footer className="footer">
             <div className="footer-container">
                 <div className="footer-socials">
-                        <p>
-                            <a href="https://www.facebook.com/leandro.celle" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faFacebookF} />
-                            </a>
-                        </p>
-                        <p>
-                            <a href="https://x.com/leandro_celle" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faXTwitter} />
-                            </a>
-                        </p>
-                        <p>
-                            <a href="https://www.instagram.com/leancelle/" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faInstagram} />
-                            </a>
-                        </p>
-                        <p>
-                            <a href="https://www.linkedin.com/in/leandrocelle/" target="_blank" rel="noopener noreferrer">
-                                <FontAwesomeIcon icon={faLinkedin} />
-                            </a>
-                        </p>
+                    <p>
+                        <a
+                            href="https://www.facebook.com/leandro.celle"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Facebook"
+                        >
+                            <FontAwesomeIcon icon={faFacebookF} />
+                        </a>
+                    </p>
+                    <p>
+                        <a
+                            href="https://x.com/leandro_celle"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Twitter"
+                        >
+                            <FontAwesomeIcon icon={faXTwitter} />
+                        </a>
+                    </p>
+                    <p>
+                        <a
+                            href="https://www.instagram.com/leancelle/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Instagram"
+                        >
+                            <FontAwesomeIcon icon={faInstagram} />
+                        </a>
+                    </p>
+                    <p>
+                        <a
+                            href="https://www.linkedin.com/in/leandrocelle/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="LinkedIn"
+                        >
+                            <FontAwesomeIcon icon={faLinkedin} />
+                        </a>
+                    </p>
                 </div>
             </div>
             <div className="footer-bottom">

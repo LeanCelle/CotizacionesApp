@@ -1,7 +1,6 @@
 import { ref, get } from "firebase/database";
 import { db } from "./firebase.js";
 
-// Obtener datos del usuario por ID
 export const getUserData = async (userId) => {
   try {
     const snapshot = await get(ref(db, `users/${userId}`));

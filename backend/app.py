@@ -7,7 +7,6 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 
-# Cache para almacenar resultados
 results_cache = {}
 
 @app.route('/', methods=['GET'])
@@ -40,11 +39,9 @@ def predict_price(ticker, start_date="2024-01-01"):
         if data.empty:
             return None, None, None
 
-        # Usando solo la columna de precios de cierre
         df = data[['Close']].reset_index()
         df.columns = ['ds', 'y']
 
-        # Modelo Prophet ajustado
         model = Prophet(yearly_seasonality=True, daily_seasonality=True, weekly_seasonality=True)
         model.fit(df)
 
@@ -87,12 +84,10 @@ def predict():
 
 @app.route('/search/<query>', methods=['GET'])
 def search(query):
-    # Busca primero en el caché
     for key, result in results_cache.items():
         if query.lower() in [result["name"].lower(), result["longName"].lower()]:
             return jsonify(result)
 
-    # Si no está en caché, busca usando el nombre corto o largo
     try:
         market_info = fetch_market_info(query)
         current_price, prediction, percent_variation = predict_price(query)
@@ -105,7 +100,6 @@ def search(query):
             **market_info
         }
 
-        # Agregar al caché
         results_cache[query] = result
         return jsonify(result)
     except Exception as e:
@@ -115,7 +109,6 @@ def search(query):
 @app.route('/last5days/<ticker>', methods=['GET'])
 def last5days(ticker):
     try:
-        # Obtener datos históricos de los últimos 3 meses
         data = yf.download(ticker, period='3mo', interval='1d')
 
         if data.empty:
@@ -124,7 +117,6 @@ def last5days(ticker):
         prices = data['Close'].values.tolist()
         dates = data.index.strftime('%d-%m').tolist()
 
-        # Agregar predicción del precio para el próximo día
         _, next_day_prediction, _ = predict_price(ticker)
 
         return {

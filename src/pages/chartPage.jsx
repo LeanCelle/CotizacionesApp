@@ -26,7 +26,7 @@ const ActionDetails = () => {
     }, []);
 
     useEffect(() => {
-        const source = axios.CancelToken.source(); // Crear una fuente de cancelación
+        const source = axios.CancelToken.source();
 
         setLoadingDetails(true);
         axios.get(`${process.env.REACT_APP_BACKEND_URL}/search/${action}`, {
@@ -37,12 +37,12 @@ const ActionDetails = () => {
                 setLoadingDetails(false);
             })
             .catch((error) => {
-                if (axios.isCancel(error)) return; // Ignorar si la solicitud fue cancelada
+                if (axios.isCancel(error)) return;
                 setErrorMessage("Error al obtener los datos. Intenta nuevamente.");
                 setLoadingDetails(false);
             });
 
-        return () => source.cancel(); // Cancelar la solicitud si el componente se desmonta
+        return () => source.cancel();
     }, [action]);
 
     const getRecommendation = (percentVariation) => {
@@ -116,11 +116,6 @@ const ActionDetails = () => {
             {alertMessage && (
                 <div className="alert-message">
                     {alertMessage}
-                </div>
-            )}
-            {errorMessage && (
-                <div className="error-message">
-                    {errorMessage}
                 </div>
             )}
         </div>

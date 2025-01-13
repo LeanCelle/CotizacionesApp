@@ -9,9 +9,8 @@ const News = () => {
   const [articlesPerPage] = useState(15);
 
   useEffect(() => {
-    // Obtener las noticias desde el backend
     axios
-      .get(`${process.env.REACT_APP_NEWS_URL}/news`) // Ajusta la URL si está desplegado
+      .get(`${process.env.REACT_APP_NEWS_URL}/news`)
       .then((response) => {
         setNews(response.data.news || []);
         setLoading(false);
@@ -22,12 +21,10 @@ const News = () => {
       });
   }, []);
 
-  // Calcular el índice de inicio y fin de los artículos a mostrar
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = news.slice(indexOfFirstArticle, indexOfLastArticle);
 
-  // Cambiar la página y hacer scroll hacia arriba
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" }); // Scroll suave hacia la parte superior
@@ -68,7 +65,7 @@ const News = () => {
           </div>
         ))
       )}
-      {/* Paginación */}
+
       {news.length > articlesPerPage && (
         <div className="pagination">
           {Array.from({ length: Math.ceil(news.length / articlesPerPage) }, (_, index) => (
