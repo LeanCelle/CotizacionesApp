@@ -14,17 +14,28 @@ import {
 } from 'chart.js';
 import 'chartjs-plugin-annotation';
 import LoadingLogo from './loading_logo';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../data/firebase';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const ChartComponent = ({ selectedAction }) => {
   const [chartData, setChartData] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (selectedAction) {
       const ticker = selectedAction.name.trim();
       if (!ticker || typeof ticker !== 'string') {
-        console.error("Ticker inválido");
+        console.error('Ticker inválido');
         return;
       }
 
@@ -32,25 +43,19 @@ const ChartComponent = ({ selectedAction }) => {
         .get(`${process.env.REACT_APP_BACKEND_URL}/last5days/${ticker}`)
         .then((response) => {
           const { prices, dates, nextDayPrediction } = response.data;
-          if (
-            Array.isArray(prices) &&
-            Array.isArray(dates) &&
-            typeof nextDayPrediction === 'number'
-          ) {
+          if (Array.isArray(prices) && Array.isArray(dates)) {
             const formattedPrices = prices.map((price, index) => ({
               x: dates[index],
               y: price,
             }));
 
-            // Agregar el punto de predicción
-            const extendedDates = [...dates, "Predicción"];
-            const extendedPrices = [
-              ...prices.map((price, index) => ({
-                x: dates[index],
-                y: price,
-              })),
-              { x: "Predicción", y: nextDayPrediction },
-            ];
+            const extendedDates = [...dates];
+            let extendedPrices = [...formattedPrices];
+
+            if (user) { // Solo agregar la predicción si el usuario está autenticado
+              extendedDates.push('Predicción');
+              extendedPrices.push({ x: 'Predicción', y: nextDayPrediction });
+            }
 
             setChartData({
               labels: extendedDates,
@@ -63,31 +68,37 @@ const ChartComponent = ({ selectedAction }) => {
                   borderColor: '#05347c',
                   borderWidth: 1,
                   fill: 'origin',
+                  pointBorderWidth: 0,
+                  pointBackgroundColor: 'rgba(217, 7, 7, 0)',
                 },
-                {
-                  label: `Predicción`,
-                  data: extendedPrices,
-                  borderColor: '#FF4500',
-                  borderDash: [5, 5], // Línea punteada
-                  borderWidth: 2,
-                  pointBackgroundColor: '#FF4500',
-                  pointBorderColor: '#FF4500',
-                  borderWidth: 1,
-                  pointStyle: 'rectRot',
-                },
+                ...(user
+                  ? [
+                      {
+                        label: 'Predicción',
+                        data: extendedPrices,
+                        borderColor: '#FF4500',
+                        borderDash: [5, 5],
+                        borderWidth: 2,
+                        pointBackgroundColor: '#FF4500',
+                        pointBorderColor: '#FF4500',
+                        borderWidth: 1,
+                        pointStyle: 'rectRot',
+                        pointBorderWidth: 0,
+                        pointBackgroundColor: 'rgba(217, 7, 7, 0)',
+                      },
+                    ]
+                  : []),
               ],
             });
           } else {
-            console.error(
-              "Datos inválidos: Los campos 'prices', 'dates' o 'nextDayPrediction' no son válidos."
-            );
+            console.error('Datos inválidos');
           }
         })
         .catch((error) => {
-          console.error("Error fetching chart data:", error);
+          console.error('Error fetching chart data:', error);
         });
     }
-  }, [selectedAction]);
+  }, [selectedAction, user]);
 
   const options = {
     responsive: true,
@@ -119,7 +130,7 @@ const ChartComponent = ({ selectedAction }) => {
   };
 
   return (
-    <div className='chart'>
+    <div className="chart">
       {chartData ? (
         <Line data={chartData} options={options} />
       ) : (

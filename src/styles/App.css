@@ -665,6 +665,7 @@ body {
 /* Ocultar menú hamburguesa en dispositivos más grandes */
 .navbar-hamburger {
   display: none;
+
 }
 
 /* Mostrar menú hamburguesa en dispositivos móviles */
@@ -674,7 +675,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 25px;
+    align-items: center;
   }
   .line {
     width: 25px;
@@ -771,6 +772,7 @@ body {
       display: flex;
       border: none;
       background-color: #ffffff00;
+      font-size: 17px;
   }
   .logout {
     font-size: 14px;
@@ -914,12 +916,12 @@ body {
 
 .DataCotizaciones {
   font-size: 26px;
-  margin: 0px 0px 10px 0px;
+  margin: 0px 5px 10px 5px;
 }
 
 .DataCotizacionesSector {
   font-size: 18px;
-  margin: 0px 0px 20px 0px;
+  margin: 0px 5px 20px 5px;
 }
 
 .data-cotizaciones-container {
@@ -965,6 +967,10 @@ body {
 
 .back-button {
   margin: 25px 0px 30px 25px;
+  font-size: 14px;
+}
+
+.user-info {
   font-size: 14px;
 }
 }

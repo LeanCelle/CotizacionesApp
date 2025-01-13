@@ -40,7 +40,7 @@ const News = () => {
   return (
     <div className="news-container">
       {currentArticles.length === 0 ? (
-        <div style={{ height: "74vh" }}>
+        <div style={{ height: "74vh", margin: "0px auto" }}>
           <p>No se encontraron noticias.</p>
         </div>
       ) : (
