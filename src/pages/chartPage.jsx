@@ -90,8 +90,8 @@ const ActionDetails = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <p>$ Predicción: <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} /></p>
-                                            <p>Recomendación: <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} /></p>
+                                            <p>$ Predicción: <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c', cursor:'pointer' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} /></p>
+                                            <p>Recomendación: <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c', cursor:'pointer' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} /></p>
                                         </>
                                     )}
                                     <p>52-Week High: <strong>${selectedAction.high_52_week?.toFixed(2) || "No disponible"}</strong></p>
@@ -99,7 +99,7 @@ const ActionDetails = () => {
                                 <div className="data-cotizaciones-second">
                                     <p>Última Fecha: <strong>{selectedAction.last_updated || "No disponible"}</strong></p>
                                     <p>% Predicción: <strong style={{ color: selectedAction.percent_variation > 0 ? "green" : selectedAction.percent_variation < 0 ? "red" : "black" }}>
-                                        {user ? `${selectedAction.percent_variation?.toFixed(2) || "No disponible"}%` : <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} />}
+                                        {user ? `${selectedAction.percent_variation?.toFixed(2) || "No disponible"}%` : <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#05347c', cursor:'pointer' }} title="Debes iniciar sesión para acceder a estos detalles" onClick={handleIconClick} />}
                                     </strong></p>
                                     <p>EPS: <strong>${selectedAction.earnings_per_share?.toFixed(2) || "No disponible"}</strong></p>
                                     <p>52-Week Low: <strong>${selectedAction.low_52_week?.toFixed(2) || "No disponible"}</strong></p>
