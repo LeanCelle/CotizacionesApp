@@ -64,7 +64,7 @@ const ActionDetails = () => {
             {loadingDetails ? (
                 <LoadingLogo loading={true} logoSrc={null} />
             ) : selectedAction ? (
-                <div style={{minHeight:'74vh'}}>
+                <div >
                     <div className="chart-big-container">
                         <p onClick={() => navigate('/')} className="back-button" style={{ cursor: 'pointer' }}>
                             <FontAwesomeIcon icon={faArrowLeft} style={{ marginRight: '6px', color: '#333' }} />

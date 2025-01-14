@@ -85,9 +85,15 @@ const TableRow = ({ data, handleActionClick }) => {
                 </>
             ) : (
                 <>
-                    <InfoIcon onClick={handleIconClick} title="Debes iniciar sesión para acceder a estos detalles" />
-                    <InfoIcon onClick={handleIconClick} title="Debes iniciar sesión para acceder a estos detalles" />
-                    <InfoIcon onClick={handleIconClick} title="Debes iniciar sesión para acceder a estos detalles" />
+                    <div className="data-into" style={{borderTop:'none'}}>
+                        <InfoIcon onClick={handleIconClick} title="Debes iniciar sesión para acceder a estos detalles" />
+                    </div>
+                    <div className="data-into" style={{borderTop:'none'}}>
+                        <InfoIcon onClick={handleIconClick} title="Debes iniciar sesión para acceder a estos detalles" />
+                    </div>
+                    <div className="data-into d" style={{borderTop:'none'}}>
+                        <InfoIcon onClick={handleIconClick} title="Debes iniciar sesión para acceder a estos detalles" />
+                    </div>
                 </>
             )}
 
