@@ -3,11 +3,18 @@ from flask_cors import CORS
 import yfinance as yf
 from prophet import Prophet
 import pandas as pd
+from apscheduler.schedulers.background import BackgroundScheduler
+import time
 
 app = Flask(__name__)
 CORS(app)
 
+# Cache para almacenar resultados
 results_cache = {}
+last_updated_time = {}
+
+# Tickers a monitorear
+tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "BRK-A", "AVGO", "DIS", "V", "LLY", "WMT", "JPM", "MA", "XOM"]
 
 @app.route('/', methods=['GET'])
 def home():
@@ -31,6 +38,7 @@ def fetch_market_info(ticker):
         "industry": market_info.get("industry"),
         "last_updated": last_updated
     }
+
 
 def predict_price(ticker, start_date="2024-01-01"):
     """Genera una predicción de precios usando Prophet con métricas relevantes."""
@@ -56,58 +64,50 @@ def predict_price(ticker, start_date="2024-01-01"):
     except Exception as e:
         return None, None, f"Error: {str(e)}"
 
+
+def update_cache():
+    """Actualiza la información y las predicciones de todos los tickers en el cache."""
+    global results_cache
+    print(f"Actualizando cache: {time.strftime('%Y-%m-%d %H:%M:%S')}")
+    for ticker in tickers:
+        try:
+            market_info = fetch_market_info(ticker)
+            current_price, prediction, percent_variation = predict_price(ticker)
+
+            result = {
+                "name": ticker,
+                "current_price": current_price,
+                "prediction": prediction,
+                "percent_variation": percent_variation,
+                **market_info
+            }
+
+            results_cache[ticker] = result
+            last_updated_time[ticker] = time.time()
+
+        except Exception as e:
+            print(f"Error actualizando {ticker}: {str(e)}")
+
+
 @app.route('/predict', methods=['GET'])
 def predict():
-    tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "BRK-A", "AVGO", "DIS", "V", "LLY", "WMT", "JPM", "MA", "XOM", ]
+    """Devuelve predicciones almacenadas en el cache."""
+    return jsonify(list(results_cache.values()))
 
-    predictions = []
-    for ticker in tickers:
-        if ticker in results_cache:
-            predictions.append(results_cache[ticker])
-            continue
-
-        market_info = fetch_market_info(ticker)
-        current_price, prediction, percent_variation = predict_price(ticker)
-
-        result = {
-            "name": ticker,
-            "current_price": current_price,
-            "prediction": prediction,
-            "percent_variation": percent_variation,
-            **market_info
-        }
-
-        results_cache[ticker] = result
-        predictions.append(result)
-
-    return jsonify(predictions)
 
 @app.route('/search/<query>', methods=['GET'])
 def search(query):
+    """Busca información de un ticker específico en el cache."""
     for key, result in results_cache.items():
         if query.lower() in [result["name"].lower(), result["longName"].lower()]:
             return jsonify(result)
 
-    try:
-        market_info = fetch_market_info(query)
-        current_price, prediction, percent_variation = predict_price(query)
-
-        result = {
-            "name": query,
-            "current_price": current_price,
-            "prediction": prediction,
-            "percent_variation": percent_variation,
-            **market_info
-        }
-
-        results_cache[query] = result
-        return jsonify(result)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 404
+    return jsonify({"error": "Ticker not found in cache"}), 404
 
 
 @app.route('/last5days/<ticker>', methods=['GET'])
 def last5days(ticker):
+    """Devuelve los precios de cierre de los últimos días."""
     try:
         data = yf.download(ticker, period='3mo', interval='1d')
 
@@ -129,6 +129,13 @@ def last5days(ticker):
         return {"error": str(e)}
 
 
+# Configuración del Scheduler
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=update_cache, trigger="interval", minutes=5)  # Actualiza cada 5 minutos
+scheduler.start()
+
+# Actualización inicial del cache
+update_cache()
 
 if __name__ == '__main__':
     app.run(debug=True)
