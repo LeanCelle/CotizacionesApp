@@ -67,17 +67,17 @@ const TableRow = ({ data, handleActionClick }) => {
         >
             <div className="data-into"><p>{data.name}</p></div>
             <div className="data-into d"><p>{data.longName}</p></div>
-            <div className="data-into"><p>{renderDataCell(data.current_price, (value) => `$${value.toFixed(2)}`)}</p></div>
+            <div className="data-into"><p>{renderDataCell(data.current_price, (value) => typeof value === 'number' ? `$${value.toFixed(2)}` : "No disponible")}</p></div>
 
             {user ? (
                 <>
                     <div className="data-into">
                         <p style={{ color: renderVariationColor(data.percent_variation) }}>
-                            {renderDataCell(data.prediction, (value) => `$${value.toFixed(2)}`)}
+                            {renderDataCell(data.prediction, (value) => typeof value === 'number' ? `$${value.toFixed(2)}` : "No disponible")}
                         </p>
                     </div>
                     <div className="data-into" style={{ color: renderVariationColor(data.percent_variation) }}>
-                        <p>{renderDataCell(data.percent_variation, (value) => `${value.toFixed(2)}%`)}</p>
+                        <p>{renderDataCell(data.percent_variation, (value) => typeof value === 'number' ? `${value.toFixed(2)}%` : "No disponible")}</p>
                     </div>
                     <div className='data-into d'>
                         <p>{renderDataCell(data.percent_variation, getRecommendation)}</p>
