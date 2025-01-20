@@ -1,14 +1,19 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+from apscheduler.schedulers.background import BackgroundScheduler
 import yfinance as yf
 from prophet import Prophet
 import pandas as pd
+import threading
 
 app = Flask(__name__)
 CORS(app)
 
-# Cache para almacenar resultados
 results_cache = {}
+cache_ready = False
+
+DEFAULT_TICKERS = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "BRK-A", "AVGO", "DIS", "V", "LLY", "WMT", "JPM", "MA", "XOM"]
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -33,6 +38,7 @@ def fetch_market_info(ticker):
         "last_updated": last_updated
     }
 
+
 def predict_price(ticker, start_date="2024-01-01"):
     """Genera una predicción de precios usando Prophet con métricas relevantes."""
     try:
@@ -40,11 +46,9 @@ def predict_price(ticker, start_date="2024-01-01"):
         if data.empty:
             return None, None, None
 
-        # Usando solo la columna de precios de cierre
         df = data[['Close']].reset_index()
         df.columns = ['ds', 'y']
 
-        # Modelo Prophet ajustado
         model = Prophet(yearly_seasonality=True, daily_seasonality=True, weekly_seasonality=True)
         model.fit(df)
 
@@ -59,40 +63,68 @@ def predict_price(ticker, start_date="2024-01-01"):
     except Exception as e:
         return None, None, f"Error: {str(e)}"
 
+
+def initialize_cache():
+    """Llena el caché con datos iniciales para los tickers predeterminados."""
+    global cache_ready
+    for ticker in DEFAULT_TICKERS:
+        try:
+            market_info = fetch_market_info(ticker)
+            current_price, prediction, percent_variation = predict_price(ticker)
+
+            results_cache[ticker] = {
+                "name": ticker,
+                "current_price": current_price,
+                "prediction": prediction,
+                "percent_variation": percent_variation,
+                **market_info
+            }
+            print(f"Datos iniciales cargados para: {ticker}")
+        except Exception as e:
+            print(f"Error cargando datos para {ticker}: {e}")
+
+    cache_ready = True
+    print("Caché inicial completo")
+
+
+def update_cache():
+    """Actualiza el caché con datos recientes para los tickers."""
+    global cache_ready
+    if not cache_ready:
+        return
+
+    tickers = list(results_cache.keys())
+    for ticker in tickers:
+        try:
+            market_info = fetch_market_info(ticker)
+            current_price, prediction, percent_variation = predict_price(ticker)
+
+            results_cache[ticker] = {
+                "name": ticker,
+                "current_price": current_price,
+                "prediction": prediction,
+                "percent_variation": percent_variation,
+                **market_info
+            }
+            print(f"Caché actualizado para: {ticker}")
+        except Exception as e:
+            print(f"Error actualizando {ticker}: {e}")
+
+
 @app.route('/predict', methods=['GET'])
 def predict():
-    tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "BRK-A", "AVGO", "DIS", "V", "LLY", "WMT", "JPM", "MA", "XOM", ]
+    if not cache_ready:
+        return jsonify({"message": "Cache is still loading. Please try again later."}), 503
 
-    predictions = []
-    for ticker in tickers:
-        if ticker in results_cache:
-            predictions.append(results_cache[ticker])
-            continue
+    return jsonify(list(results_cache.values()))
 
-        market_info = fetch_market_info(ticker)
-        current_price, prediction, percent_variation = predict_price(ticker)
-
-        result = {
-            "name": ticker,
-            "current_price": current_price,
-            "prediction": prediction,
-            "percent_variation": percent_variation,
-            **market_info
-        }
-
-        results_cache[ticker] = result
-        predictions.append(result)
-
-    return jsonify(predictions)
 
 @app.route('/search/<query>', methods=['GET'])
 def search(query):
-    # Busca primero en el caché
     for key, result in results_cache.items():
         if query.lower() in [result["name"].lower(), result["longName"].lower()]:
             return jsonify(result)
 
-    # Si no está en caché, busca usando el nombre corto o largo
     try:
         market_info = fetch_market_info(query)
         current_price, prediction, percent_variation = predict_price(query)
@@ -105,7 +137,6 @@ def search(query):
             **market_info
         }
 
-        # Agregar al caché
         results_cache[query] = result
         return jsonify(result)
     except Exception as e:
@@ -114,8 +145,10 @@ def search(query):
 
 @app.route('/last5days/<ticker>', methods=['GET'])
 def last5days(ticker):
+    if not cache_ready:
+        return jsonify({"message": "Cache is still loading. Please try again later."}), 503
+
     try:
-        # Obtener datos históricos de los últimos 3 meses
         data = yf.download(ticker, period='3mo', interval='1d')
 
         if data.empty:
@@ -124,7 +157,6 @@ def last5days(ticker):
         prices = data['Close'].values.tolist()
         dates = data.index.strftime('%d-%m').tolist()
 
-        # Agregar predicción del precio para el próximo día
         _, next_day_prediction, _ = predict_price(ticker)
 
         return {
@@ -137,6 +169,16 @@ def last5days(ticker):
         return {"error": str(e)}
 
 
+scheduler = BackgroundScheduler()
+scheduler.add_job(initialize_cache, 'date')
+scheduler.add_job(update_cache, 'interval', minutes=60)
+scheduler.start()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+
+    threading.Thread(target=initialize_cache).start()
+
+    try:
+        app.run(debug=True)
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
