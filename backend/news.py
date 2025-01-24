@@ -13,7 +13,7 @@ app.add_middleware(
 )
 
 API_URL = "https://newsapi.org/v2/everything"
-API_KEY = "1f4082a069ca452ba1daa5cf0336c12b"
+API_KEY = "8a536be42e3c4e9a9adf0c66726d6641"
 
 @app.get("/")
 def read_root():
