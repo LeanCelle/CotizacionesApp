@@ -7,9 +7,19 @@ import ActionDetails from './pages/chartPage';
 import Login from './pages/login';
 import Layout from './pages/layout';
 import News from './pages/news';
+import Maintenance from './components/Maintenance';
 
 const App = () => {
     return (
+        <Maintenance />
+    );
+};
+
+export default App;
+
+
+/*
+
         <Router>
             <Routes>
                 <Route path="/" element={<Layout />}>
@@ -21,7 +31,5 @@ const App = () => {
                 </Route>
             </Routes>
         </Router>
-    );
-};
 
-export default App;
+        */
